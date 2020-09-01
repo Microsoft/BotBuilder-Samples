@@ -5,6 +5,7 @@ using Microsoft.Bot.Schema;
 using Microsoft.Botframework.AdaptiveCards.Converter.Facebook;
 using Microsoft.Botframework.AdaptiveCards.Converter.LINE;
 using Microsoft.Botframework.AdaptiveCards.Converter.Slack;
+using Microsoft.Botframework.AdaptiveCards.Converter.Telegram;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
@@ -124,6 +125,25 @@ namespace AdaptiveCardsBot.Middleware
 
                         activity.ChannelData = JObject.Parse(messageString);
                         activity.Attachments = newList;
+                    }
+                }
+                else if (activity.ChannelId == "telegram")
+                {
+                    if (activity.Attachments.Any())
+                    {
+                        var adaptiveCards = new List<AdaptiveCard>();
+                        foreach (var attachment in activity.Attachments ?? new List<Attachment>())
+                        {
+                            if (attachment.ContentType == AdaptiveCard.ContentType)
+                            {
+                                var adaptiveCard = attachment.ContentAs<AdaptiveCard>();
+                                adaptiveCards.Add(adaptiveCard);
+                            }
+                        }
+
+                        var telegramConverter = new TelegramCardConverter();
+                        var telegramMethods = await telegramConverter.ToChannelData(adaptiveCards).ConfigureAwait(false);
+                        activity.ChannelData = JArray.FromObject(telegramMethods);
                     }
                 }
             }

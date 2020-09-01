@@ -7,7 +7,6 @@
   <ItemGroup>
     <Folder Include="Email\" />
     <Folder Include="SMS\" />
-    <Folder Include="Telegram\" />
     <Folder Include="Slack\" />
   </ItemGroup>
 
