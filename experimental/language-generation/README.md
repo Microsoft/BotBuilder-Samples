@@ -1,5 +1,7 @@
 # Language Generation (**Stable release**)
 
+Language Generation (LG) allows developers to extract embedded strings from their code and resource files and manage them through a LG runtime and file format. With LG, developers can create a more natural conversation experience by defining multiple variations on a phrase, executing simple expressions based on context, and referring to conversational memory.
+
 This feature is no longer experimental. It is available in **Stable release**, starting botbuilder SDK version 4.9.0 and higher.
 
 | Language     | Availability          | Docs         | Samples      |
