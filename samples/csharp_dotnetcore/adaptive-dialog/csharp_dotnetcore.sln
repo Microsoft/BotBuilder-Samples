@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaterfallAndAdaptiveBot", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoBotWithLUIS", "06.todo-bot\ToDoBotWithLUIS.csproj", "{7DC0488D-835A-48FD-BA41-1AF437F1EDEF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterruptionsBot", "05.interruptions-bot\InterruptionsBot.csproj", "{BDEDD0D4-253E-4514-80DA-00F8C84789E9}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QnAMaker", "07.qnamaker\QnAMaker.csproj", "{7C1E5DCD-25C9-400F-9D46-280590B8A5DD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoBotWithLUISAndQnAMaker", "08.todo-bot-luis-qnamaker\ToDoBotWithLUISAndQnAMaker.csproj", "{8E5169BC-80CB-42EE-8903-1AABA41E3C59}"
@@ -51,10 +49,6 @@ Global
 		{7DC0488D-835A-48FD-BA41-1AF437F1EDEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DC0488D-835A-48FD-BA41-1AF437F1EDEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DC0488D-835A-48FD-BA41-1AF437F1EDEF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BDEDD0D4-253E-4514-80DA-00F8C84789E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BDEDD0D4-253E-4514-80DA-00F8C84789E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BDEDD0D4-253E-4514-80DA-00F8C84789E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BDEDD0D4-253E-4514-80DA-00F8C84789E9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7C1E5DCD-25C9-400F-9D46-280590B8A5DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7C1E5DCD-25C9-400F-9D46-280590B8A5DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C1E5DCD-25C9-400F-9D46-280590B8A5DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
