@@ -15,13 +15,13 @@ namespace Microsoft.BotBuilderSamples
     [ApiController]
     public class BotController : ControllerBase
     {
-        private IBotFrameworkHttpAdapter Adapter;
-        private IBot Bot;
+        private IBotFrameworkHttpAdapter _adapter;
+        private IBot _bot;
 
         public BotController(IBotFrameworkHttpAdapter adapter, IBot bot)
         {
-            Adapter = adapter;
-            Bot = bot;
+            _adapter = adapter;
+            _bot = bot;
         }
 
         [HttpPost]
@@ -29,7 +29,7 @@ namespace Microsoft.BotBuilderSamples
         {
             // Delegate the processing of the HTTP POST to the adapter.
             // The adapter will invoke the bot.
-            await Adapter.ProcessAsync(Request, Response, Bot);
+            await _adapter.ProcessAsync(Request, Response, _bot);
         }
     }
 }

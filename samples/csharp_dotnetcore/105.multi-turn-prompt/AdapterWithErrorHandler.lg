@@ -1,0 +1,8 @@
+> Language Generation definition file. 
+> See https://aka.ms/language-generation to learn more
+
+# BotErrorMessage
+- The bot encountered an error or bug.
+
+# FixCodeMessage
+- To continue to run this bot, please fix the bot source code.

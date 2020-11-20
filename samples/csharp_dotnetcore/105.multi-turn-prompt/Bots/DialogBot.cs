@@ -14,7 +14,7 @@ namespace Microsoft.BotBuilderSamples
     // each with a dependency on a distinct IBot type. This allows ASP dependency injection to glue everything together without ambiguity.
     // The dialog manager has access to user state and conversation state from the turn context, and
     // it will save state changes before exiting.
-    public class DialogBot<T> : ActivityHandler
+    public class DialogBot<T> : IBot
         where T : Dialog
     {
         private readonly DialogManager DialogManager;
@@ -27,11 +27,11 @@ namespace Microsoft.BotBuilderSamples
             DialogManager = new DialogManager(rootDialog);
         }
 
-        public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default)
+        public async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default)
         {
             Logger.LogInformation("Running dialog with Activity.");
+            
             await DialogManager.OnTurnAsync(turnContext, cancellationToken: cancellationToken).ConfigureAwait(false);
         }
-
     }
 }

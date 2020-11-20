@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiTurnPromptBot", "01.multi-turn-prompt\MultiTurnPromptBot.csproj", "{5370ED16-9EC6-4BE3-AE6F-894AB21902FF}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardsBot", "02.using-cards\CardsBot.csproj", "{B74FECB1-36C5-4566-BA4F-BF6FF4294A57}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreBot", "03.core-bot\CoreBot.csproj", "{249F740D-8C02-477D-BFAB-9567C0552C2D}"
@@ -31,10 +29,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5370ED16-9EC6-4BE3-AE6F-894AB21902FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5370ED16-9EC6-4BE3-AE6F-894AB21902FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5370ED16-9EC6-4BE3-AE6F-894AB21902FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5370ED16-9EC6-4BE3-AE6F-894AB21902FF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B74FECB1-36C5-4566-BA4F-BF6FF4294A57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B74FECB1-36C5-4566-BA4F-BF6FF4294A57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B74FECB1-36C5-4566-BA4F-BF6FF4294A57}.Release|Any CPU.ActiveCfg = Release|Any CPU

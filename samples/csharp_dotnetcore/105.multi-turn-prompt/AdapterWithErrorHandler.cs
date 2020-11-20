@@ -4,37 +4,40 @@
 using System;
 using System.IO;
 using Microsoft.Bot.Builder;
-using Microsoft.Bot.Builder.LanguageGeneration;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
-using Microsoft.Bot.Connector.Authentication;
+using Microsoft.Bot.Builder.LanguageGeneration;
+using Microsoft.Bot.Builder.TraceExtensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+
 namespace Microsoft.BotBuilderSamples
 {
     public class AdapterWithErrorHandler : BotFrameworkHttpAdapter
     {
-        private Templates _templates;
-        public AdapterWithErrorHandler(ICredentialProvider credentialProvider, ILogger<BotFrameworkHttpAdapter> logger, IStorage storage,
-            UserState userState, ConversationState conversationState, IConfiguration configuration)
-            : base(credentialProvider)
+        public AdapterWithErrorHandler(IConfiguration configuration, ILogger<BotFrameworkHttpAdapter> logger, IStorage storage, ConversationState conversationState, UserState userState)
+            : base(configuration, logger)
         {
             // These methods add middleware to the adapter. The middleware adds the storage and state objects to the
-            // turn context each turn so that the dialog manager can retrieve them.
+            // turn context each turn.s
             this.UseStorage(storage);
             this.UseBotState(userState);
             this.UseBotState(conversationState);
 
             string[] paths = { ".", $"{nameof(AdapterWithErrorHandler)}.lg" };
             string fullPath = Path.Combine(paths);
-            _templates = Templates.ParseFile(fullPath);
+            var templates = Templates.ParseFile(fullPath);
 
             OnTurnError = async (turnContext, exception) =>
             {
                 // Log any leaked exception from the application.
-                logger.LogError($"Exception caught : {exception.Message}");
+                // NOTE: In production environment, you should consider logging this to
+                // Azure Application Insights. Visit https://aka.ms/bottelemetry to see how
+                // to add telemetry capture to your bot.
+                logger.LogError(exception, $"[OnTurnError] unhandled error : {exception.Message}");
 
-                // Send a catch-all apology to the user.
-                await turnContext.SendActivityAsync(ActivityFactory.FromObject(_templates.Evaluate("SomethingWentWrong", exception)));
+                // Send a message to the user
+                await turnContext.SendActivityAsync(ActivityFactory.FromObject(templates.Evaluate("BotErrorMessage")));
+                await turnContext.SendActivityAsync(ActivityFactory.FromObject(templates.Evaluate("FixCodeMessage")));
 
                 if (conversationState != null)
                 {
@@ -47,9 +50,12 @@ namespace Microsoft.BotBuilderSamples
                     }
                     catch (Exception e)
                     {
-                        logger.LogError($"Exception caught on attempting to Delete ConversationState : {e.Message}");
+                        logger.LogError(e, $"Exception caught on attempting to Delete ConversationState : {e.Message}");
                     }
                 }
+
+                // Send a trace activity, which will be displayed in the Bot Framework Emulator
+                await turnContext.TraceActivityAsync("OnTurnError Trace", exception.Message, "https://www.botframework.com/schemas/error", "TurnError");
             };
         }
     }

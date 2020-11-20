@@ -1,0 +1,102 @@
+﻿> Language Generation definition file. 
+> See https://aka.ms/language-generation to learn more
+
+# AskForName
+- Please enter your name.
+
+# AckName
+- Thanks, ${CapitalizeName(trim(user.userProfile.Name))}.
+
+# AgeConfirmPrompt
+- Would you like to give your age?
+
+# AskForAge
+- what is your age?
+
+# AskForAge.invalid
+- Sorry, '${this.value}' does not work. I'm looking for a value between 1-150. ${AskForAge()}
+- Sorry, that does not work. Your age must be greater than 0 and less than 150. ${AskForAge()}
+
+# AskForAge.unRecognized
+- Sorry, I do not recognized '${this.value}'. ${AskForAge()}
+
+# CapitalizeName(param)
+- ${toUpper(substring(param, 0, 1))}${if((count(param) != 1), substring(param, 1), '')}
+
+# ConfirmPrompt
+- Is this ok?
+
+> This template uses in-line expressions. Expressions are defined using adaptive expressions. 
+> See https://aka.ms/adaptive-expressions to learn more.
+# FinalUserProfileReadOut
+- IF: ${turn.finalConfirmation == true}
+    - I have your mode of transport as **${user.userProfile.Transport}** and your name as **${trim(CapitalizeName(user.userProfile.Name))}**. ${UserAgeReadBack()}
+- ELSE:
+    - Thanks. Your profile will not be kept.
+
+# FinalConfirmPrompt
+- Is the information I've gathered so far okay?
+- Would you like to continue?
+
+# InvalidPicture
+- The attachment must be a jpeg/png image file.
+
+> Structured template definition.
+# ModeOfTransportPrompt
+[Activity
+    Text = ${ModeOfTransportPrompt.Text()}
+]
+
+# ModeOfTransportPrompt.Text
+- What is your favorite mode of transportation?
+- Please enter your mode of transport.
+
+# NoAge
+- No age given.
+- Skipping age.
+
+# NoPicture
+- No picture given.
+- Skipping picture.
+
+# PictureConfirmation
+[Activity
+    Text = ${PictureConfirmation.Text()}
+    AttachmentLayout = list
+    Attachments = ${GetPictureAttachment()}
+]
+
+# PictureConfirmation.Text
+- Your wonderful picture:
+- Your profile picture:
+
+# GetPictureAttachment
+[Attachment
+    contenttype = ${user.picture.contentType}
+    contentUrl = ${user.picture.contentUrl}
+    name = ${user.picture.name}
+]
+
+# PictureUploadPrompt
+- Please attach a profile picture (or type any message to skip).
+
+# TransportChoices
+- =[{"value":"car"},{"value":"bus"},{"value":"other"}]
+
+# TeamsFileUpload
+- Skipping attachment prompt in Teams channel...
+- Teams file upload requires consent.  Skipping image upload.
+
+# ThanksForPicture
+- Thank you for the profile picture!
+- Nice profile picture! :)
+
+# UserAgeReadBack 
+- IF: ${user.userProfile.Age == null}
+   - And, No age given.
+- ELSE: 
+   - I have your age as **${user.userProfile.Age}**.
+   - You are **${user.userProfile.Age}** years old.
+
+# WelcomeMessage
+- Hello, I'm the multi-turn prompt bot. Are you ready to get started?
