@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Microsoft Teams Hello World Sample App</title>
+    <link rel="stylesheet" href="~/css/msteams-16.css" />
+    <link rel="stylesheet" href="~/css/Custom.css" />
+    <link rel="stylesheet" href="~/css/Site.css" />
+
+    <script src="https://statics.teams.cdn.office.net/sdk/v1.5.2/js/MicrosoftTeams.min.js" asp-append-version="true"></script>
+
+    @RenderSection("scripts", required: false)
+</head>
+<body class="theme-light">
+    <div class="surface">
+        <div class="panel">
+            @RenderBody()
+        </div>
+    </div>
+</body>
+</html>

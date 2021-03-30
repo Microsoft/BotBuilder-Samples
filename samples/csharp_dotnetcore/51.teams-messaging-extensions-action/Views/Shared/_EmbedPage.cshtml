@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <script src="https://statics.teams.cdn.office.net/sdk/v1.5.2/js/MicrosoftTeams.min.js" asp-append-version="true"></script>
+
+    @RenderSection("scripts", required: false)
+</head>
+<body>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        #embed-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 95%;
+            height: 95%;
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border-style: none;
+        }
+    </style>
+    <script>
+        microsoftTeams.initialize();
+
+        //- Handle the Esc key
+        document.onkeyup = function (event) {
+            if ((event.key === 27) || (event.key === "Escape")) {
+                microsoftTeams.tasks.submitTask(null); //- this will return an err object to the completionHandler()
+            }
+        }</script>
+    <div id="embed-container">@RenderBody()</div>
+</body>
+</html>

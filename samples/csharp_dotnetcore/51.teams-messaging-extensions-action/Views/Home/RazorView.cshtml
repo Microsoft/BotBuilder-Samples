@@ -1,0 +1,25 @@
+﻿@model TeamsMessagingExtensionsAction.Models.RazorView
+
+@{ ViewData["Title"] = "RazorView";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+@{ var Title = "Welcome to RazorView!";
+    var weekDay = DateTime.Now.DayOfWeek;
+    var weekDate = DateTime.Now.Day + "-" + DateTime.Now.Month + "-" + DateTime.Now.Year;
+    var DisplayMessage = " Today's date is " + weekDate + ", " + weekDay; }
+
+<p>@Title</p>
+<p>@DisplayMessage</p>
+<button onclick="return closeView()">Close</button>
+
+<script type="text/javascript">
+    microsoftTeams.initialize();
+    function closeView() {
+        var razorData = {
+            Title: "@Title",
+            DisplayData: "@DisplayMessage"
+        }
+        microsoftTeams.tasks.submitTask(razorData);
+        return true;
+    }
+</script>

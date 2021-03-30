@@ -1,0 +1,57 @@
+﻿@model TeamsMessagingExtensionsAction.Models.CustomForm
+
+@{
+    ViewData["Title"] = "CustomForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<html>
+<head>
+    <style>
+        .login {
+            text-align: center;
+        }
+    </style>
+    <title>Microsoft Teams Task Module Tester - Custom Form</title>
+</head>
+<body>
+    <script>
+    microsoftTeams.initialize();
+        function validateForm() {
+            var empInfo = {
+                EmpId: document.forms["empForm"]["empId"].value,
+                EmpName: document.forms["empForm"]["empName"].value,
+                EmpEmail: document.forms["empForm"]["empEmail"].value
+            }
+            microsoftTeams.tasks.submitTask(empInfo);
+            return true;
+        }</script>
+
+    <div class="surface theme-light">
+        <div class="panel">
+            <div class="login">
+            <h2>Enter Details</h2><br>
+            <form method="POST" id="empForm" onSubmit="return validateForm()">
+                <label>
+                    <b> Employee ID: </b>
+                </label>
+                <input type="text" placeholder="Employee id" name="empId">
+                <br><br>
+                <label>
+                    <b>Name:&emsp;&emsp;&emsp;</b>
+                </label>
+                <input type="text" placeholder="Employee Name" name="empName">
+                <br><br>
+                <label>
+                    <b>E-Mail:&emsp;&emsp;&ensp;</b>
+                </label>
+                <input type="email" placeholder="e-mail ID" name="empEmail">
+                <br><br>
+                <input type="submit" value="Submit">
+            </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -53,7 +53,6 @@ class TeamsMessagingExtensionsActionBot extends TeamsActivityHandler {
                 context,
                 context.activity.from.id
             );
-           return member.name;
         } catch (e) {
             if (e.code === 'MemberNotFoundInConversation') {
                 context.sendActivity(MessageFactory.text('Member not found.'));
@@ -142,7 +141,6 @@ function shareMessageCommand(context, action) {
         action.messagePayload.body.content,
         images
     );
-
     if (action.messagePayload.attachments?.length > 0) {
         // This sample does not add the MessagePayload Attachments.  This is left as an
         // exercise for the user.
