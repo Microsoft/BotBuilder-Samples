@@ -1,0 +1,73 @@
+> Language Generation definition file. 
+> See https://aka.ms/language-generation to learn more
+
+# ShowSelection
+- You selected '${user.LanguagePreference}'. Well done.
+- Excellent! '${user.LanguagePreference}' is a great choice!
+
+# AdaptiveCard
+[Activity
+    Attachments = ${json(AdaptiveCard.Definition())}
+]
+
+# AdaptiveCard.Definition
+- ${json(fromFile('../Cards/WelcomeCard.json'))}
+
+# LanguageChoicePrompt
+[Activity
+    Text = ${LanguageChoicePrompt.Text()}
+    SuggestedActions = ${EnglishCard()} | ${SpanishCard()} | ${FrenchCard()} | ${ItalianCard()}
+]
+
+# LanguageChoicePrompt.Text
+- Choose your language
+- What language would you like to use?
+
+# InvalidChoice
+- Sorry, I don't understand that. Please choose one of the following values: 'en', 'es', 'it', 'fr'.
+
+# HelpInfo
+- IF: ${user.LanguagePreference == null}
+  - Language is set to the default 'en'. ${HelpInfo.AvailableOptions()}
+- ELSE:
+  - Language is set to '${user.LanguagePreference}'. ${HelpInfo.AvailableOptions()}
+
+# HelpInfo.AvailableOptions
+- To change it, type LANGUAGE. To see a Hero Card in the selected language type HERO. To see this message again, type HELP.
+
+# EnglishCard
+[CardAction
+    title = English
+    type = imBack
+    value = en
+]
+
+# SpanishCard
+[CardAction
+    title = Spanish
+    type = imBack
+    value = es
+]
+
+# ItalianCard
+[CardAction
+    title = Italian
+    type = imBack
+    value = it
+]
+
+# FrenchCard
+[CardAction
+    title = French
+    type = imBack
+    value = fr
+]
+
+# HeroCard
+[HeroCard   
+    title = BotFramework Hero Card
+    subtitle = Microsoft Bot Framework
+    text = Build and connect intelligent bots to interact with your users naturally wherever they are, from text/sms to Skype, Slack, Office 365 mail and other popular services.
+    image = https://sec.ch9.ms/ch9/7ff5/e07cfef0-aa3b-40bb-9baa-7c9ef8ff7ff5/buildreactionbotframework_960.jpg
+    buttons = Show more cards
+]

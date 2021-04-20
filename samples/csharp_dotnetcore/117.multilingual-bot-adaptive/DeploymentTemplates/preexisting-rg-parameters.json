@@ -1,0 +1,39 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "appId": {
+            "value": ""
+        },
+        "appSecret": {
+            "value": ""
+        },
+        "botId": {
+            "value": ""
+        },
+        "botSku": {
+            "value": ""
+        },
+        "newAppServicePlanName": {
+            "value": ""
+        },
+        "newAppServicePlanSku": {
+            "value": {
+                "name": "S1",
+                "tier": "Standard",
+                "size": "S1",
+                "family": "S",
+                "capacity": 1
+            }
+        },
+        "appServicePlanLocation": {
+            "value": ""
+        },
+        "existingAppServicePlan": {
+            "value": ""
+        },
+        "newWebAppName": {
+            "value": ""
+        }
+    }
+}
