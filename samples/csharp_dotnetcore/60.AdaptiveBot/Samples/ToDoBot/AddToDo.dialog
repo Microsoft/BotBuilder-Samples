@@ -1,0 +1,58 @@
+{
+    "$schema": "../../app.schema",
+    "$type": "Microsoft.AdaptiveDialog",
+    "steps": [
+        {
+            "$type": "Microsoft.SaveEntity",
+            "entity": "title",
+            "property": "dialog.todo"
+        },
+        {
+            "$type": "Microsoft.IfCondition",
+            "condition": "dialog.todo == null",
+            "steps": [
+                {
+                    "$type": "Microsoft.TextInput",
+                    "prompt": "OK, please enter the title of your todo.",
+                    "property": "dialog.todo"
+                }
+            ]
+        },
+        {
+            "$type": "Microsoft.IfCondition",
+            "condition": "user.todos == null",
+            "steps": [
+                {
+                    "$type": "Microsoft.InitProperty",
+                    "property": "user.todos",
+                    "type": "array"
+                }
+            ]
+        },
+        {
+            "$type": "Microsoft.EditArray",
+            "changeType": "Push",
+            "arrayProperty": "user.todos",
+            "itemProperty": "dialog.todo"
+        },
+        {
+            "$type": "Microsoft.SendActivity",
+            "activity": "Successfully added a todo named \"{dialog.todo}\""
+        },
+        {
+            "$type": "Microsoft.DeleteProperty",
+            "property": "dialog.todo"
+        }
+    ],
+    "rules": [
+        {
+            "$type": "Microsoft.IntentRule",
+            "intent": "CancelIntent",
+            "steps": [
+                {
+                    "$type": "Microsoft.CancelAllDialog"
+                }
+            ]
+        }
+    ]
+}

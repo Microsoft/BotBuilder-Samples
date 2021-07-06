@@ -1,0 +1,45 @@
+{
+    "$schema": "../../app.schema",
+    "$type": "Microsoft.AdaptiveDialog",
+    "$id": "root",
+    "autoEndDialog": false,
+    "recognizer": "ToDoLuis.lu",
+    "steps": [
+        {
+            "$type": "Microsoft.SendActivity",
+            "activity": "Hi"
+        }
+    ],
+    "rules": [
+        {
+            "$type": "Microsoft.IntentRule",
+            "intent": "AddToDo",
+            "steps": [
+                "ToDoLuisBot.AddItem"
+            ]
+        },
+        {
+            "$type": "Microsoft.IntentRule",
+            "intent": "DeleteToDo",
+            "steps": [
+                "ToDoLuisBot.DeleteItem"
+            ]
+        },
+        {
+            "$type": "Microsoft.IntentRule",
+            "intent": "ShowToDo",
+            "steps": [
+                "ToDoLuisBot.ShowItems"
+            ]
+        },
+        {
+            "$type": "Microsoft.UnknownIntentRule",
+            "steps": [
+                {
+                    "$type": "Microsoft.SendActivity",
+                    "activity": "[LuisToDoHelp]"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,44 @@
+﻿
+# LuisToDoGreeting
+- Welcome!  I'm a list bot [LuisToDoHelp]
+
+# LuisToDoHelp
+- ```
+    You can add and remove items from any list
+    - Add bananna to shopping list
+    - Remove hat from packing list
+    ```
+
+# showSingleList(x)
+- * {x} list
+
+# showSingleItem(x)
+- * {x}
+
+> # ShowItems
+> - CASE: {count(dialog.list) > 0}
+>     - ```
+> Your most recent @{count(dialog.list)} tasks are 
+>  @{humanize(list, '[showSingleItem]', '\n')}
+>       ```
+> - DEFAULT:
+>     - The list is empty.
+> 
+> 
+> 
+> # ShowLists(lists)
+> - CASE: @{count(lists}) > 0}
+>     - ```
+>  @{humanize(list, '[showSingleItem]', '\n')}
+>       ```
+> - DEFAULT:
+>     - The list is empty.
+> 
+> 
+> 
+> # PromptForList(lists)
+> - What list did you want?\n\n[ShowLists(@{lists})]
+> 
+> # PromptForItem(list)
+> - What item did you want?\n\n[ShowItems(@{list})]
+

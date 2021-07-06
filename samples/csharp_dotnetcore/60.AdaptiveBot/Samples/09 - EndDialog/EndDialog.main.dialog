@@ -1,0 +1,55 @@
+﻿{
+    "$schema": "../../app.schema",
+    "$type": "Microsoft.AdaptiveDialog",
+    "autoEndDialog": false,
+    "recognizer": {
+        "$type": "Microsoft.RegexRecognizer",
+        "intents": {
+            "JokeIntent": "(?i)joke",
+            "CancelIntent": "(?i)cancel|never mind"
+        }
+    },
+    "steps": [
+        {
+            "$type": "Microsoft.IfCondition",
+            "condition": "user.name == null",
+            "steps": [
+                {
+                    "$type": "Microsoft.TextInput",
+                    "property": "user.name",
+                    "prompt": "Hello, I'm Zoidberg. What is your name?"
+                }
+            ]
+        },
+        {
+            "$type": "Microsoft.SendActivity",
+            "activity": "Hello {user.name}, nice to talk to you!"
+        },
+        {
+            "$type": "Microsoft.SendActivity",
+            "activity": "I'm a joke bot. To get started say \"joke\"."
+        }
+    ],
+    "rules": [
+        {
+            "$type": "Microsoft.EventRule",
+            "events": [ "cancelDialog" ],
+            "steps": [
+                {
+                    "$type": "Microsoft.SendActivity",
+                    "activity": "ok."
+                },
+                {
+                    "$type": "Microsoft.EndDialog"
+                }
+            ]
+        },
+        {
+            "$type": "Microsoft.IntentRule",
+            "intent": "JokeIntent",
+            "steps": [
+                "EndDialog.TellJoke"
+            ]
+        }
+    ]
+}

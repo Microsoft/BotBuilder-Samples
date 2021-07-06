@@ -1,0 +1,94 @@
+{
+    "$schema": "../../app.schema",
+    "$type": "Microsoft.AdaptiveDialog",
+    "recognizer": {
+        "$type": "Microsoft.RegexRecognizer",
+        "intents": {
+            "DefaultIntent": "(?i)default|defaultrule",
+            "WaitForInputIntent": "(?i)wait|input",
+            "IfConditionIntent": "(?i)property|ifproperty",
+            "TextInputIntent": "(?i)text|textprompt",
+            "DoStepsIntent": "(?i)steps|intent",
+            "BeginDialogIntent": "(?i)call",
+            "ExternalLanguageIntent": "(?i)external|lg",
+            "EndDialogIntent": "(?i)end"
+        }
+    },
+    "rules": [
+        {
+            "$type": "Microsoft.IntentRule",
+            "intent": "DefaultIntent",
+            "steps": [
+                "NoMatchRule.main"
+            ]
+        },
+        {
+            "$type": "Microsoft.IntentRule",
+            "intent": "WaitForInputIntent",
+            "steps": [
+                "WaitforInput.main"
+            ]
+        },
+        {
+            "$type": "Microsoft.IntentRule",
+            "intent": "IfConditionIntent",
+            "steps": [
+                "IfCondition.main"
+            ]
+        },
+        {
+            "$type": "Microsoft.IntentRule",
+            "intent": "TextInputIntent",
+            "steps": [
+                "TextInput.main"
+            ]
+        },
+        {
+            "$type": "Microsoft.IntentRule",
+            "intent": "DoStepsIntent",
+            "steps": [
+                "DoSteps.main"
+            ]
+        },
+        {
+            "$type": "Microsoft.IntentRule",
+            "intent": "BeginDialogIntent",
+            "steps": [
+                "BeginDialog.main"
+            ]
+        },
+        {
+            "$type": "Microsoft.IntentRule",
+            "intent": "ExternalLanguageIntent",
+            "steps": [
+                "ExternalLanguage.main"
+            ]
+        },
+        {
+            "$type": "Microsoft.IntentRule",
+            "intent": "EndDialogIntent",
+            "steps": [
+                "EndDialog.main"
+            ]
+        },
+        {
+            "$type": "Microsoft.IntentRule",
+            "intent": "HelpIntent",
+            "steps": [
+                {
+                    "$type": "Microsoft.SendActivity",
+                    "activity": "[help]"
+                }
+            ]
+        },
+        {
+            "$type": "Microsoft.UnknownIntentRule",
+            "steps": [
+                {
+                    "$type": "Microsoft.SendActivity",
+                    "activity": "[RootDialog.help]"
+                }
+            ]
+        }
+    ]
+}

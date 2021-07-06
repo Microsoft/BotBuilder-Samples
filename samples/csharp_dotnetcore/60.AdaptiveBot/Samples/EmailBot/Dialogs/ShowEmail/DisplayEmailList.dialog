@@ -1,0 +1,64 @@
+﻿{
+  "$schema": "../../app.schema",
+  "$type": "Microsoft.AdaptiveDialog",
+  "steps": [
+    "GetDisplayEmails",
+    {
+      "$type": "Microsoft.SendActivity",
+      "activity": "[ShowEmailSummary(user)]"
+    },
+    {
+      "$type": "Microsoft.IfCondition",
+      "condition": "count(user.emails)>0",
+      "steps": [
+        // Bug: Choice input cannot accept expression as value
+        {
+          "$type": "Microsoft.SendActivity",
+          "activity": "[ShowEmailList(user)]"
+        },
+        {
+          "$type": "Microsoft.TextInput",
+          "prompt": "[ChooseEmailList(user)]",
+          "property": "dialog.choice"
+        },
+        // Question: how to use SwitchCondition
+        {
+          "$type": "Microsoft.SwitchCondition",
+          "condition": "dialog.choice",
+          "cases": {
+            "'1'": [
+              {
+                "$type": "Microsoft.SetProperty",
+                "property": "user.focusedEmail",
+                "value": "user.emails[0]"
+              }
+            ],
+            "'2'": [
+              {
+                "$type": "Microsoft.SetProperty",
+                "property": "user.focusedEmail",
+                "value": "user.emails[1]"
+              }
+            ],
+            "'3'": [
+              {
+                "$type": "Microsoft.SetProperty",
+                "property": "user.focusedEmail",
+                "value": "user.emails[2]"
+              }
+            ]
+          }
+        },
+
+        {
+          "$type": "Microsoft.SendActivity",
+          "activity": "[ReadFocusedEmail(user)]"
+        },
+        {
+          "$type": "Microsoft.SendActivity",
+          "activity": "[ShowEmailCard(user.focusedEmail)]"
+        }
+      ]
+    }
+  ]
+}

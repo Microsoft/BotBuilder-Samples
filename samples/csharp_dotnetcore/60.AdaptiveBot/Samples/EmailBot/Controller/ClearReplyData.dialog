@@ -1,0 +1,15 @@
+{
+  "$schema": "../../app.schema",
+  "$type": "Microsoft.AdaptiveDialog",
+  "steps": [
+    // Reset data
+    {
+      "$type": "Microsoft.DeleteProperty",
+      "property": "user.toContent"
+    },
+    {
+      "$type": "Microsoft.DeleteProperty",
+      "property": "user.toSubject"
+    }
+  ]
+}

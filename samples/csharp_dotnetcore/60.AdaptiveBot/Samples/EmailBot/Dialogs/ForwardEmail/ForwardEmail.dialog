@@ -1,0 +1,50 @@
+{
+  "$schema": "../../app.schema",
+  "$type": "Microsoft.AdaptiveDialog",
+  "steps": [
+    "ClearForwardData",
+    {
+      "$type": "Microsoft.IfCondition",
+      "condition": "user.focusedEmail==null",
+      "steps": [
+        "ChooseEmail"
+      ]
+    },
+    {
+      "$type": "Microsoft.SetProperty",
+      "value": "concat('Fw:',user.focusedEmail.subject)",
+      "property": "user.fwSubject"
+    },
+    {
+      "$type": "Microsoft.TextInput",
+      "prompt": "OK, please enter the content of your email.",
+      "property": "user.fwContent"
+    },
+    "FindContact",
+    {
+      "$type": "Microsoft.ConfirmInput",
+      "property": "dialog.confirmed",
+      "prompt": "Are you sure to send this email?",
+      "retryPrompt": "Please try again.",
+      "invalidPrompt": "Please input yes/no.",
+      "alwaysPrompt": true
+    },
+    {
+      "$type": "Microsoft.IfCondition",
+      "condition": "dialog.confirmed",
+      "steps": [
+        "ForwardEmails",
+        {
+          "$type": "Microsoft.SendActivity",
+          "activity": "Your email has been sent succsessfully"
+        }
+      ],
+      "elseSteps": [
+        {
+          "$type": "Microsoft.SendActivity",
+          "activity": "OK, let's do it next time."
+        }
+      ]
+    }
+  ]
+}

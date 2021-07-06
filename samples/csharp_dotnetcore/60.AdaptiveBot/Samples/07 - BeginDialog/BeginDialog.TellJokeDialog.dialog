@@ -1,0 +1,17 @@
+{
+  "$schema": "../../app.schema",
+  "$type": "Microsoft.AdaptiveDialog",
+  "steps": [
+    {
+      "$type": "Microsoft.SendActivity",
+      "activity": "Why did the chicken cross the road?"
+    },
+    {
+      "$type": "Microsoft.EndTurn"
+    },
+    {
+      "$type": "Microsoft.SendActivity",
+      "activity": "To get to the other side"
+    }
+  ]
+}

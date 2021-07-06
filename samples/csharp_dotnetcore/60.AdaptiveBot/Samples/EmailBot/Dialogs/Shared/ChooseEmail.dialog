@@ -1,0 +1,49 @@
+{
+  "$schema": "../../app.schema",
+  "$type": "Microsoft.AdaptiveDialog",
+  "steps": [
+    "GetDisplayEmails",
+    {
+      "$type": "Microsoft.SendActivity",
+      "activity": "[ShowEmailList(user)]"
+    },
+    {
+      "$type": "Microsoft.TextInput",
+      "prompt": "[SelectEmail]",
+      "property": "dialog.choice"
+    },
+    {
+      "$type": "Microsoft.IfCondition",
+      "condition": "dialog.choice == '1'",
+      "steps": [
+        {
+          "$type": "Microsoft.SetProperty",
+          "property": "user.focusedEmail",
+          "value": "user.emails[0]"
+        }
+      ]
+    },
+    {
+      "$type": "Microsoft.IfCondition",
+      "condition": "dialog.choice == '2'",
+      "steps": [
+        {
+          "$type": "Microsoft.SetProperty",
+          "property": "user.focusedEmail",
+          "value": "user.emails[1]"
+        }
+      ]
+    },
+    {
+      "$type": "Microsoft.IfCondition",
+      "condition": "dialog.choice == '3'",
+      "steps": [
+        {
+          "$type": "Microsoft.SetProperty",
+          "property": "user.focusedEmail",
+          "value": "user.emails[2]"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "$schema": "../../app.schema",
+  "$type": "Microsoft.AdaptiveDialog",
+  "recognizer": {
+    "$type": "Microsoft.RegexRecognizer",
+    "intents": {
+      "ShowMeetingIntent": "(?i)show meeting",
+      "CreateMeetingIntent": "(?i)create meeting",
+      "HelpIntent": "(?i)help",
+      "ShowNextPageIntent": "(?i)next page meeting",
+      "UpdateMeetingIntent": "(?i)update meeting",
+      "AcceptMeetingIntent": "(?i)accept meeting",
+      "DeclineMeetingIntent": "(?i)decline meeting"
+    }
+  },
+  "rules": [
+    {
+      "$type": "Microsoft.UnknownIntentRule",
+      "steps": [
+        {
+          "$type": "Microsoft.SendActivity",
+          "activity": "Hi! I'm a Calendar bot. Say \"show meeting\" to get started."
+        }
+      ]
+    },
+    {
+      "$type": "Microsoft.IntentRule",
+      "intent": "ShowMeetingIntent",
+      "steps": [
+        // should be initialize
+        "CalendarClearUserData",
+        "ShowMeeting",
+        "CalendarClearUserData"
+      ]
+    },
+    {
+      "$type": "Microsoft.IntentRule",
+      "intent": "CreateMeetingIntent",
+      "steps": [
+        // should be initialize
+        "CalendarClearUserData",
+        "CreateMeeting",
+        "CalendarClearUserData"
+      ]
+    },
+    {
+      "$type": "Microsoft.IntentRule",
+      "intent": "UpdateMeetingIntent",
+      "steps": [
+        // should be initialize
+        "CalendarClearUserData",
+        "UpdateMeeting",
+        "CalendarClearUserData"
+      ]
+    },
+    {
+      "$type": "Microsoft.IntentRule",
+      "intent": "AcceptMeetingIntent",
+      "steps": [
+        // should be initialize
+        "CalendarClearUserData",
+        "AcceptMeeting",
+        "CalendarClearUserData"
+      ]
+    },
+    {
+      "$type": "Microsoft.IntentRule",
+      "intent": "DeclineMeetingIntent",
+      "steps": [
+        // should be initialize
+        "CalendarClearUserData",
+        "DeclineMeeting",
+        "CalendarClearUserData"
+      ]
+    },
+    {
+      "$type": "Microsoft.IntentRule",
+      "intent": "HelpIntent",
+      "steps": [
+        {
+          "$type": "Microsoft.SendActivity",
+          "activity": "This is help"
+        }
+      ]
+    },
+    {
+      "$type": "Microsoft.IntentRule",
+      "intent": "ShowNextPageIntent",
+      "steps": [
+        "CalendarNextPage",
+        "ShowMeeting"
+      ]
+    }
+  ]
+}

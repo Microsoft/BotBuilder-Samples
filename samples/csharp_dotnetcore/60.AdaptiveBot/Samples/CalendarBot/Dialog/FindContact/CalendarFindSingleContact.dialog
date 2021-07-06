@@ -1,0 +1,20 @@
+{
+  "$schema": "../../app.schema",
+  "$type": "Microsoft.AdaptiveDialog",
+  "steps": [
+    {
+      "$type": "Microsoft.OAuthPrompt",
+      "ConnectionName": "msgraph",
+      "Title": "Log in",
+      "Text": "Please log in to your calendar account",
+      "Property": "dialog.token"
+    },
+    "GetContactService"
+    //{
+    //  "$type": "Microsoft.EditArray",
+    //  "changeType": "Push",
+    //  "arrayProperty": "user.recipients",
+    //  "itemProperty": "dialog.getResponse.value[0].emailAddresses[0].address"
+    //}
+  ]
+}

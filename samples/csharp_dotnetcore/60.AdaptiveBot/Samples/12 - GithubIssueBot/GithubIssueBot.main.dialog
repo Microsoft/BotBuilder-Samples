@@ -1,0 +1,23 @@
+{
+    "$schema": "../../app.schema",
+    "$type": "Microsoft.AdaptiveDialog",
+    "steps": [
+        {
+            "$type": "Microsoft.SendActivity",
+            "activity": "Getting issues..."
+        },
+        {
+            "$type": "Microsoft.HttpRequest",
+            "url": "https://api.github.com/repos/Microsoft/botbuilder-dotnet/issues",
+            "method": "GET",
+            "header": {
+                "User-Agent": "TestBot"
+            },
+            "property": "dialog.getResponse"
+        },
+        {
+            "$type": "Microsoft.SendActivity",
+            "activity": "[Show]"
+        }
+    ]
+}

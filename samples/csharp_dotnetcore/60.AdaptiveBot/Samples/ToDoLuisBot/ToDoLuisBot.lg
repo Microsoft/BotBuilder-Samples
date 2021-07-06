@@ -1,0 +1,58 @@
+# LuisToDoGreeting
+- Welcome!  I'm a list bot [LuisToDoHelp]
+
+# LuisToDoHelp
+- ```
+    You can add and remove items from any list
+    - Add bananna to shopping list
+    - Remove hat from packing list
+  ```
+
+# showSingleList(x)
+- * {x} list
+
+# showSingleItem(x)
+- * {x}
+
+# ShowItems(user, listName)
+- IF: {listName == "shopping"}
+    - ```
+    You most recent @{count(user.lists.shopping)} shopping items are
+    
+    @{join(foreach(user.lists.shopping, x, lgTemplate('showSingleItem', x)), '\n')}
+
+     
+
+     ```
+- ELSEIF: {listName == "grocery"}
+    - ```
+    You most recent @{count(user.lists.grocery)} grocery items are
+
+    @{join(foreach(user.lists.grocery, x, lgTemplate('showSingleItem', x)), '\n')}
+
+     ```
+- ELSEIF: {listName == "todo"}
+    - ```
+    You most recent @{count(user.lists.todo)} todo items are
+
+    @{join(foreach(user.lists.todo, x, lgTemplate('showSingleItem', x)), '\n')}
+
+     ```
+
+
+
+# ShowLists
+- IF: {count(lists) > 0}
+    - ```
+      ```
+- ELSE:
+    - The list is empty.
+
+
+
+# PromptForList(lists)
+- What list did you want?\n\n[ShowLists]
+
+# PromptForItem(list)
+- What item did you want?\n\n[ShowItems]
+

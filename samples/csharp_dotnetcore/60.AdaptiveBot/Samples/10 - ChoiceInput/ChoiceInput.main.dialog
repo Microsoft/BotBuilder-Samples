@@ -1,0 +1,28 @@
+{
+    "$schema": "../../app.schema",
+    "$type": "Microsoft.AdaptiveDialog",
+    "steps": [
+        {
+            "$type": "Microsoft.ChoiceInput",
+            "property": "user.style",
+            "choices": [
+                {
+                    "value": "Test1"
+                },
+                {
+                    "value": "Test2"
+                },
+                {
+                    "value": "Test3"
+                }
+            ],
+            "prompt": "Please select a value from below:",
+            "style": "List",
+            "alwaysPrompt": true
+        },
+        {
+            "$type": "Microsoft.SendActivity",
+            "activity": "You select: {user.style.Value}"
+        }
+    ]
+}

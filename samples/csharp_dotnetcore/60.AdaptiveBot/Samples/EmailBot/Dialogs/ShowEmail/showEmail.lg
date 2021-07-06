@@ -1,0 +1,71 @@
+﻿# ShowEmail(email)
+- {email.subject}
+
+# ShowEmailListItem(email)
+- $ {email.subject}
+
+# ShowEmailSummary(user)
+- IF: {count(user.emails) == 1}
+  - You have {user.emailCount} email. This email is [ShowEmail(user.emails[0])].
+- ELSEIF: {count(user.emails) >= 2}
+  - You have {user.emailCount} emails, the first email is [ShowEmail(user.emails[0])].
+- ELSEIF: {count(user.emails) == 0}
+  - You don't have any email.
+- ELSE:
+  - You should not be here.
+
+# ChooseEmailList(user)
+- IF: {count(user.emails) == 1}
+  - Do you want to read this one?
+- ELSEIF: {count(user.emails) >= 1}
+  - Which one do you want to read? You can input things like 1, 2, 3.
+- ELSE:
+  - You should not be here.
+
+# ReshowOverview
+- Do you want to see your overview again? You can reply yes or no.
+
+# ReadFocusedEmail(user)
+- Here is the detail for {user.focusedEmail.subject}:
+
+# ShowEmailCard(x)
+- ```
+[adaptivecard
+{
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "size": "Medium",
+                    "weight": "Bolder",
+                    "text": "@{x.subject}"
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "@{x.bodyPreview}",
+                    "wrap": true,
+                    "maxLines": 5
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.OpenUrl",
+            "title": "View",
+            "url": "@{x.webLink}"
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.0"
+}
+]
+```

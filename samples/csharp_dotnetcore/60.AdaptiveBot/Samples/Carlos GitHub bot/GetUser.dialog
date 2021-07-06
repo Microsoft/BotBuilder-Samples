@@ -1,0 +1,24 @@
+{
+    "$schema": "../../app.schema",
+    "$type": "Microsoft.AdaptiveDialog",
+    "steps": [
+        {
+            "$type": "Microsoft.SaveEntity",
+            "entity": "username",
+            "property": "dialog.username"
+        },
+        {
+            "$type": "Microsoft.HttpRequest",
+            "header": {
+                "User-Agent": "GithubBot"
+            },
+            "url": "https://api.github.com/users/{dialog.username}",
+            "method": "GET",
+            "property": "dialog.getResponse"
+        },
+        {
+            "$type": "Microsoft.SendActivity",
+            "activity": "```\n[Attachment=@{dialog.getResponse.avatar_url} \"image/jpeg\"]\n   ```"
+        }
+    ]
+}

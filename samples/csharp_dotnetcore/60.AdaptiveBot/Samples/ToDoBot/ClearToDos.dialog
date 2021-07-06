@@ -1,0 +1,26 @@
+{
+    "$schema": "../../app.schema",
+    "$type": "Microsoft.AdaptiveDialog",
+    "steps": [
+        {
+            "$type": "Microsoft.EditArray",
+            "changeType": "Clear",
+            "arrayProperty": "user.todos"
+        },
+        {
+            "$type": "Microsoft.SendActivity",
+            "activity": "Successfully clear the todo list."
+        }
+    ],
+    "rules": [
+        {
+            "$type": "Microsoft.IntentRule",
+            "intent": "CancelIntent",
+            "steps": [
+                {
+                    "$type": "Microsoft.CancelAllDialog"
+                }
+            ]
+        }
+    ]
+}

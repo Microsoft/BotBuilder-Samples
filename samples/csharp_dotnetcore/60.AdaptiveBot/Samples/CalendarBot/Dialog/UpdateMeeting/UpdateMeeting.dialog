@@ -1,0 +1,116 @@
+{
+  "$schema": "../../app.schema",
+  "$type": "Microsoft.AdaptiveDialog",
+  "steps": [
+    {
+      "$type": "Microsoft.IfCondition",
+      "condition": "user.focusedMeeting == null",
+      "steps": [
+        "GetDisplayMeetings",
+        {
+          "$type": "Microsoft.SendActivity",
+          "activity": "[ShowMeetingList(user)]"
+        },
+        {
+          "$type": "Microsoft.TextInput",
+          "Prompt": "OK, please choose a meeting to update, you can choose meeting by 1, 2, 3...",
+          "property": "dialog.choice"
+        },
+        {
+          "$type": "Microsoft.IfCondition",
+          "condition": "dialog.choice == '1'",
+          "steps": [
+            {
+              "$type": "Microsoft.SetProperty",
+              "property": "user.focusedMeeting",
+              "value": "user.meetings[0]"
+            }
+          ]
+        },
+        {
+          "$type": "Microsoft.IfCondition",
+          "condition": "dialog.choice == '2'",
+          "steps": [
+            {
+              "$type": "Microsoft.SetProperty",
+              "property": "user.focusedMeeting",
+              "value": "user.meetings[1]"
+            }
+          ]
+        },
+        {
+          "$type": "Microsoft.IfCondition",
+          "condition": "dialog.choice == '3'",
+          "steps": [
+            {
+              "$type": "Microsoft.SetProperty",
+              "property": "user.focusedMeeting",
+              "value": "user.meetings[2]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "$type": "Microsoft.IfCondition",
+      "condition": "user.startDateTime == null",
+      "steps": [
+        {
+          "$type": "Microsoft.DateTimeInput",
+          "Prompt": "OK, please enter the new start date time of meeting.",
+          "property": "user.startDateTime"
+        }
+      ]
+    },
+    // should replace with add duration to start date time as end date time
+    {
+      "$type": "Microsoft.IfCondition",
+      "condition": "user.endDateTime == null",
+      "steps": [
+        {
+          "$type": "Microsoft.DateTimeInput",
+          "Prompt": "OK, please enter the new end date time of meeting.",
+          "property": "user.endDateTime"
+        }
+      ]
+    },
+
+    // convert date time prompt result to timestamp
+    {
+      "$type": "Microsoft.SetProperty",
+      "property": "user.startDateTime",
+      "value": "formatDateTime(user.startDateTime[0].Value)"
+    },
+    {
+      "$type": "Microsoft.SetProperty",
+      "property": "user.endDateTime",
+      "value": "formatDateTime(user.endDateTime[0].Value)"
+    },
+
+    {
+      "$type": "Microsoft.ConfirmInput",
+      "property": "dialog.confirmed",
+      "prompt": "Are you sure to update this meeting?",
+      "retryPrompt": "Please try again.",
+      "invalidPrompt": "Please input yes/no.",
+      "alwaysPrompt": true
+    },
+    {
+      "$type": "Microsoft.IfCondition",
+      "condition": "dialog.confirmed",
+      "steps": [
+        "UpdateMeetingService",
+        {
+          "$type": "Microsoft.SendActivity",
+          "activity": "The meeting has been updated."
+        }
+      ],
+      "elseSteps": [
+        {
+          "$type": "Microsoft.SendActivity",
+          "activity": "OK, let's do it next time."
+        }
+      ]
+    }
+  ]
+}

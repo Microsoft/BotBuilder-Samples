@@ -1,0 +1,21 @@
+{
+    "$schema": "../../app.schema",
+    "$type": "Microsoft.AdaptiveDialog",
+    "$id": "root",
+    "steps": [
+        {
+            "$type": "Microsoft.TextInput",
+            "prompt": "Hello, what is your name?",
+            "outputProperty": "user.name"
+        },
+        {
+            "$type": "Microsoft.TraceActivity",
+            "valueType": "memory",
+            "value": "{user}"
+        },
+        {
+            "$type": "Microsoft.LogStep",
+            "text": "{user.name}"
+        }
+    ]
+}

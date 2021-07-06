@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <UserSecretsId>49ea05d8-7d3d-4e4f-a331-db17dd490dcb</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Jurassic" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.Bot.Builder" Version="4.5.0-Preview-2019-04-23-04" />
+    <PackageReference Include="Microsoft.Bot.Builder.AI.Luis" Version="4.5.0-Preview-2019-04-23-04" />
+    <PackageReference Include="Microsoft.Bot.Builder.AI.QnA" Version="4.5.0-Preview-2019-04-23-04" />
+    <PackageReference Include="Microsoft.Bot.Builder.Dialogs" Version="4.5.0-Preview-2019-04-23-04" />
+    <PackageReference Include="Microsoft.Bot.Builder.Dialogs.Adaptive" Version="4.5.0-Preview-2019-04-23-04" />
+    <PackageReference Include="Microsoft.Bot.Builder.Dialogs.Debugging" Version="4.5.0-Preview-2019-04-23-04" />
+    <PackageReference Include="Microsoft.Bot.Builder.Dialogs.Declarative" Version="4.5.0-Preview-2019-04-23-04" />
+    <PackageReference Include="Microsoft.Bot.Builder.Integration.AspNet.Core" Version="4.5.0-Preview-2019-04-23-04" />
+    <PackageReference Include="Microsoft.Bot.Builder.LanguageGeneration" Version="4.5.0-Preview-2019-04-23-04" />
+    <PackageReference Include="Microsoft.Bot.Builder.LanguageGeneration.Renderer" Version="4.5.0-Preview-2019-04-23-04" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.1.0-beta1-final" />
+  </ItemGroup>
+
+    <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

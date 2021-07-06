@@ -1,0 +1,42 @@
+{
+  "$schema": "../../app.schema",
+  "$type": "Microsoft.AdaptiveDialog",
+  "steps": [
+    {
+      "$type": "Microsoft.TextInput",
+      "prompt": "OK, please enter the subject of your email.",
+      "property": "user.subject"
+    },
+    {
+      "$type": "Microsoft.TextInput",
+      "prompt": "OK, please enter the body of your email.",
+      "property": "user.body"
+    },
+    "FindContact",
+    {
+      "$type": "Microsoft.ConfirmInput",
+      "property": "dialog.confirmed",
+      "prompt": "Are you sure to send this email?",
+      "retryPrompt": "Please try again.",
+      "invalidPrompt": "Please input yes/no.",
+      "alwaysPrompt": true
+    },
+    {
+      "$type": "Microsoft.IfCondition",
+      "condition": "dialog.confirmed",
+      "steps": [
+        "SendEmails",
+        {
+          "$type": "Microsoft.SendActivity",
+          "activity": "Your email has been sent succsessfully"
+        }
+      ],
+      "elseSteps": [
+        {
+          "$type": "Microsoft.SendActivity",
+          "activity": "OK, let's do it next time."
+        }
+      ]
+    }
+  ]
+}

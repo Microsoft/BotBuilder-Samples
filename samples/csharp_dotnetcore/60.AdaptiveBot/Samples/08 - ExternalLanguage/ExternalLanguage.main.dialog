@@ -1,0 +1,63 @@
+{
+    "$schema": "../../app.schema",
+    "$type": "Microsoft.AdaptiveDialog",
+    "autoEndDialog": false,
+    "recognizer": {
+        "$type": "Microsoft.RegexRecognizer",
+        "intents": {
+            "HelpIntent": "(?i)help",
+            "GreetingIntent": "(?i)hi|hello|hiya|greetings",
+            "JokeIntent": "(?i)joke",
+            "FortuneTellerIntent": "(?i)fortune|future"
+        }
+    },
+    "steps": [
+        {
+            "$type": "Microsoft.SendActivity",
+            "activity": "[welcome]"
+        },
+        "ExternalLanguage.Greeting"
+    ],
+    "rules": [
+        {
+            "$type": "Microsoft.IntentRule",
+            "intent": "JokeIntent",
+            "steps": [
+                "ExternalLanguage.TellJoke"
+            ]
+        },
+        {
+            "$type": "Microsoft.IntentRule",
+            "intent": "FortuneTellerIntent",
+            "steps": [
+                "ExternalLanguage.FortuneTeller"
+            ]
+        },
+        {
+            "$type": "Microsoft.IntentRule",
+            "intent": "GreetingIntent",
+            "steps": [
+                "ExternalLanguage.Greeting"
+            ]
+        },
+        {
+            "$type": "Microsoft.IntentRule",
+            "intent": "HelpIntent",
+            "steps": [
+                {
+                    "$type": "Microsoft.SendActivity",
+                    "activity": "[help]"
+                }
+            ]
+        },
+        {
+            "$type": "Microsoft.UnknownIntentRule",
+            "steps": [
+                {
+                    "$type": "Microsoft.SendActivity",
+                    "activity": "[help]"
+                }
+            ]
+        }
+    ]
+}

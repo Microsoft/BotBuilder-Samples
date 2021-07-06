@@ -1,0 +1,49 @@
+{
+  "$schema": "../../app.schema",
+  "$type": "Microsoft.AdaptiveDialog",
+  "steps": [
+    "ClearReplyData",
+    {
+      "$type": "Microsoft.IfCondition",
+      "condition": "user.focusedEmail==null",
+      "steps": [
+        "ChooseEmail"
+      ]
+    },
+    {
+      "$type": "Microsoft.SetProperty",
+      "value": "concat('Re:',user.focusedEmail.subject)",
+      "property": "user.toSubject"
+    },
+    {
+      "$type": "Microsoft.TextInput",
+      "prompt": "OK, please enter the content of your email.",
+      "property": "user.toContent"
+    },
+    {
+      "$type": "Microsoft.ConfirmInput",
+      "property": "dialog.confirmed",
+      "prompt": "Are you sure to send this email?",
+      "retryPrompt": "Please try again.",
+      "invalidPrompt": "Please input yes/no.",
+      "alwaysPrompt": true
+    },
+    {
+      "$type": "Microsoft.IfCondition",
+      "condition": "dialog.confirmed",
+      "steps": [
+        "ReplyEmails",
+        {
+          "$type": "Microsoft.SendActivity",
+          "activity": "Your email has been sent succsessfully"
+        }
+      ],
+      "elseSteps": [
+        {
+          "$type": "Microsoft.SendActivity",
+          "activity": "OK, let's do it next time."
+        }
+      ]
+    }
+  ]
+}

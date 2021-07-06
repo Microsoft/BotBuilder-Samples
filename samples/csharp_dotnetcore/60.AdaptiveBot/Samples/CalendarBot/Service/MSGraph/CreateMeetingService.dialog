@@ -1,0 +1,63 @@
+{
+  "$schema": "../../app.schema",
+  "$type": "Microsoft.AdaptiveDialog",
+  "steps": [
+
+    {
+      "$type": "Microsoft.IfCondition",
+      "condition": "dialog.token == null",
+      "steps": [
+        {
+          "$type": "Microsoft.OAuthPrompt",
+          "ConnectionName": "msgraph",
+          "Title": "Log in",
+          "Text": "Please log in to your calendar account",
+          "Property": "dialog.token"
+        }
+      ]
+    },
+
+    {
+      "$type": "Microsoft.HttpRequest",
+      "url": "https://graph.microsoft.com/v1.0/me/events",
+      "method": "POST",
+      "header": {
+        "Authorization": "Bearer {dialog.token.Token}"
+      },
+      "body": {
+        "body": {
+          "content": "{user.body}",
+          "contentType": "Text"
+        },
+        "subject": "{user.subject}",
+        "attendees": [
+          {
+            "emailAddress": {
+              "address": "{user.email}"
+            }
+          }
+        ],
+        "start": {
+          "dateTime": "{user.startDateTime}",
+          "timeZone": "UTC"
+        },
+        "end": {
+          "dateTime": "{user.endDateTime}",
+          "timeZone": "UTC"
+        },
+        "location": {
+          "displayName": "{user.location}",
+          "locationType": "default",
+          "uniqueIdType": "unknown",
+          "address": {},
+          "coordinates": {}
+        }
+      },
+      "Property": "user.createResponse"
+    }
+    //{
+    //  "$type": "Microsoft.SendActivity",
+    //  "activity": "response: {user.createResponse}"
+    //}
+  ]
+}

@@ -1,0 +1,74 @@
+{
+    "$schema": "../../app.schema",
+    "$type": "Microsoft.AdaptiveDialog",
+  "steps": [
+    {
+      "$type": "Microsoft.SaveEntity",
+      "entity": "ListType",
+      "property": "dialog.listName"
+    },
+    {
+      "$type": "Microsoft.IfCondition",
+      "condition": "user.lists == null",
+      "steps": [
+        {
+          "$type": "Microsoft.InitProperty",
+          "property": "user.lists",
+          "type": "object"
+        }
+      ]
+    },
+    {
+      "$type": "Microsoft.IfCondition",
+      "condition": "dialog.listName == null",
+      "steps": [
+        {
+          "$type": "Microsoft.ChoiceInput",
+          "property": "dialog.listName",
+          "choices": [
+            {
+              "value": "shopping",
+              "synonyms": [
+                "1",
+                "first",
+                "shopping",
+                "first one"
+              ]
+            },
+            {
+              "value": "grocery",
+              "synonyms": [
+                "2",
+                "second",
+                "grocery",
+                "second one"
+              ]
+            },
+            {
+              "value": "todo",
+              "synonyms": [
+                "3",
+                "third",
+                "todo",
+                "third one",
+                "to do"
+              ]
+            }
+          ],
+          "prompt": "Which list do you want to show?",
+          "style": "SuggestedAction",
+          "alwaysPrompt": true
+        },
+        {
+          "$type": "Microsoft.SetProperty",
+          "property": "dialog.listName",
+          "value": "dialog.listName.Value"
+        }
+      ]
+    },
+    {
+      "$type": "Microsoft.SendActivity",
+      "activity": "[ShowItems(user, dialog.listName)]"
+    }
+  ]
+}

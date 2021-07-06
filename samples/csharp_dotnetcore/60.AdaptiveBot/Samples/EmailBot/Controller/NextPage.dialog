@@ -1,0 +1,12 @@
+{
+  "$schema": "../../app.schema",
+  "$type": "Microsoft.AdaptiveDialog",
+  "steps": [
+    // Todo: check page boundary.
+    {
+      "$type": "Microsoft.SetProperty",
+      "value": "user.showIndex+1",
+      "property": "user.showIndex"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+﻿{
+    "$schema": "https://raw.githubusercontent.com/Microsoft/botbuilder-tools/SchemaGen/packages/DialogSchema/src/dialogSchema.schema",
+    "$role": "unionType(Microsoft.IDialog)",
+    "title": "Calculate Dog Years",
+    "description": "This will take the property and return as the dialog result ",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "inputProperty": {
+            "type": "string",
+            "title": "Input Property",
+            "description": "This will be the property passed in"
+        },
+        "outputProperty": {
+            "type": "string",
+            "title": "Output Property",
+            "description": "Property to put the result into"
+        }
+    }
+}

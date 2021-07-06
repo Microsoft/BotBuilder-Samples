@@ -1,0 +1,47 @@
+{
+    "$schema": "../../app.schema",
+    "$type": "Microsoft.AdaptiveDialog",
+    "steps": [
+        {
+            "$type": "Microsoft.IntegerInput",
+            "alwaysPrompt": true,
+            "property": "user.age",
+            "prompt": "What is your age?"
+        },
+        {
+            "$type": "Microsoft.SendActivity",
+            "activity": "Your age is: {user.age}"
+        },
+        {
+            "$type": "Testbot.JavascriptStep",
+            "script": "Samples/13 - CustomStep/dogyears.js",
+            "property": "user.dogyears"
+        },
+        {
+            "$type": "Microsoft.SendActivity",
+            "activity": "Your age in dog years is: {user.dogyears}"
+        },
+        {
+            "$type": "Testbot.CSharpStep",
+            "script": "Samples/13 - CustomStep/catyears.csx",
+            "outputProperty": "user.catyears"
+        },
+        {
+            "$type": "Microsoft.SendActivity",
+            "activity": "Your age in cat years is: {user.catyears}"
+        },
+        {
+            "$type": "Testbot.CalculateDogYears",
+            "inputProperty": "user.age",
+            "outputProperty": "conversation.dog"
+        },
+        {
+            "$type": "Microsoft.SendActivity",
+            "activity": "A dog that is {conversation.dog} years old is the same age as you"
+        },
+        {
+            "$type": "Microsoft.SendActivity",
+            "activity": "A cat that is {conversation.cat} years old is the same age as you"
+        },
+    ]
+}

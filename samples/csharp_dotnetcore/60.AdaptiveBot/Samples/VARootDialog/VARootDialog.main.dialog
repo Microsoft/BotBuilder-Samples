@@ -1,0 +1,55 @@
+{
+    "$schema": "../../app.schema",
+    "$type": "Microsoft.AdaptiveDialog",
+    "recognizer": {
+        "$type": "Microsoft.RegexRecognizer",
+      "intents": {
+        "ToDoIntent": "(?i)todo",
+        "EmailIntent": "(?i)email",
+        "CalendarIntent": "(?i)meeting",
+        "HelpIntent": "(?i)help"
+      }
+    },
+  "rules": [
+    {
+      "$type": "Microsoft.IntentRule",
+      "intent": "ToDoIntent",
+      "steps": [
+        "ToDoBot.main"
+      ]
+    },
+    {
+      "$type": "Microsoft.IntentRule",
+      "intent": "EmailIntent",
+      "steps": [
+        "EmailBot.main"
+      ]
+    },
+    {
+      "$type": "Microsoft.IntentRule",
+      "intent": "CalendarIntent",
+      "steps": [
+        "CalendarBot.main"
+      ]
+    },
+    {
+      "$type": "Microsoft.IntentRule",
+      "intent": "HelpIntent",
+      "steps": [
+        {
+          "$type": "Microsoft.SendActivity",
+          "activity": "[help]"
+        }
+      ]
+    },
+    {
+      "$type": "Microsoft.UnknownIntentRule",
+      "steps": [
+        {
+          "$type": "Microsoft.SendActivity",
+          "activity": "Hi, I am VA bot, you can try show/send email, add/delete todos."
+        }
+      ]
+    }
+  ]
+}

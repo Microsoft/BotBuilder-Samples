@@ -1,0 +1,28 @@
+{
+  "$schema": "../../app.schema",
+  "$type": "Microsoft.AdaptiveDialog",
+  "steps": [
+    {
+      "$type": "Microsoft.IfCondition",
+      "condition": "dialog.token == null",
+      "steps": [
+        {
+          "$type": "Microsoft.OAuthPrompt",
+          "ConnectionName": "msgraph",
+          "Title": "Log in",
+          "Text": "Please log in to your email account",
+          "Property": "dialog.token"
+        }
+      ]
+    },
+    {
+      "$type": "Microsoft.HttpRequest",
+      "url": "https://graph.microsoft.com/beta/me/mailFolders/inbox/messages",
+      "method": "GET",
+      "header": {
+        "Authorization": "Bearer {dialog.token.Token}"
+      },
+      "Property": "user.getGraphEmails"
+    }
+  ]
+}

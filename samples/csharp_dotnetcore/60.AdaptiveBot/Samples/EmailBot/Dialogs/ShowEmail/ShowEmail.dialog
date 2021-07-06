@@ -1,0 +1,97 @@
+{
+  "$schema": "../../app.schema",
+  "$type": "Microsoft.AdaptiveDialog",
+  "recognizer": {
+    "$type": "Microsoft.RegexRecognizer",
+    "intents": {
+      "ForwardEmailIntent": "(?i)forward",
+      "ReplyEmailIntent": "(?i)reply",
+      "ShowNextPageIntent": "(?i)next page",
+      "ShowEmailIntent": "(?i)show"
+    }
+  },
+  "rules": [
+    {
+      "$type": "Microsoft.IntentRule",
+      "intent": "ForwardEmailIntent",
+      "steps": [
+        "ForwardEmail"
+      ]
+    },
+    {
+      "$type": "Microsoft.IntentRule",
+      "intent": "ReplyEmailIntent",
+      "steps": [
+        "ReplyEmail"
+      ]
+    },
+    {
+      "$type": "Microsoft.IntentRule",
+      "intent": "ShowNextPageIntent",
+      "steps": [
+        "NextPage",
+        "DisplayEmailList"
+      ]
+    },
+    {
+      "$type": "Microsoft.IntentRule",
+      "intent": "ShowEmailIntent",
+      "steps": [
+        "DisplayEmailList"
+      ]
+    }
+  ],
+  "steps": [
+    "DisplayEmailList",
+    // Display overview again -- a little hack way. Always use intent to push a new dialog on top of stack, and reprompt this question after this new dialog is finished.
+    // Question: How to build a dialog which can repeat itself: show email->read email->show again?->show email… Do we need to use Microsoft.RepeatDialog? How to use it?
+    {
+      "$type": "Microsoft.ConfirmInput",
+      "property": "dialog.confirmed",
+      "prompt": "You can say next page, show email again, forward this email, reply this email, etc, or say no to cancel the flow.",
+      "retryPrompt": "Please try again.",
+      "invalidPrompt": "Please input yes/no.",
+      "alwaysPrompt": true
+    },
+    {
+      "$type": "Microsoft.IfCondition",
+      "condition": "dialog.confirmed",
+      "steps": [
+      ],
+      "elseSteps": [
+        {
+          "$type": "Microsoft.SendActivity",
+          "activity": "OK, have a good time."
+        }
+      ]
+    },
+
+    //// Display overview again
+    //// Question: How to build a dialog which can repeat itself: show email->read email->show again?->show email… Do we need to use Microsoft.RepeatDialog? How to use it?
+    //{
+    //  "$type": "Microsoft.ConfirmInput",
+    //  "property": "dialog.confirmed",
+    //  "prompt": "Do you want to see current email overview again?",
+    //  "retryPrompt": "Please try again.",
+    //  "invalidPrompt": "Please input yes/no.",
+    //  "alwaysPrompt": true
+    //},
+    //{
+    //  "$type": "Microsoft.IfCondition",
+    //  "condition": "dialog.confirmed",
+    //  "steps": [
+    //    //"ShowEmail",
+    //    {
+    //      "$type": "Microsoft.SendActivity",
+    //      "activity": "Show email again."
+    //    }
+    //  ],
+    //  "elseSteps": [
+    //    {
+    //      "$type": "Microsoft.SendActivity",
+    //      "activity": "OK, have a good time. You can also say 'next page email' to go to next page."
+    //    }
+    //  ]
+    //}
+  ]
+}

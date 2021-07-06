@@ -1,0 +1,62 @@
+{
+  "$schema": "../../app.schema",
+  "$type": "Microsoft.AdaptiveDialog",
+  "steps": [
+    "GetMeetingsService",
+    {
+      "$type": "Microsoft.EditArray",
+      "changeType": "Clear",
+      "arrayProperty": "user.meetings"
+    },
+    // *** Translate from graph model to view model. Map the same entity from graph/google to the same attribute. ***
+    {
+      "$type": "Microsoft.IfCondition",
+      "condition": "user.provider=='msgraph'",
+      "steps": [
+        // Need subarray. Hack for now.
+        //{
+        //  "$type": "Microsoft.EditArray",
+        //  "changeType": "Push",
+        //  "arrayProperty": "user.meetings",
+        //  "itemProperty": "user.getGraphMeetings.value[user.showIndex * user.pageSize + 0]"
+        //},
+        //{
+        //  "$type": "Microsoft.EditArray",
+        //  "changeType": "Push",
+        //  "arrayProperty": "user.meetings",
+        //  "itemProperty": "user.getGraphMeetings.value[user.showIndex * user.pageSize + 1]"
+        //},
+        //{
+        //  "$type": "Microsoft.EditArray",
+        //  "changeType": "Push",
+        //  "arrayProperty": "user.meetings",
+        //  "itemProperty": "user.getGraphMeetings.value[user.showIndex * user.pageSize + 2]"
+        //},
+
+        {
+          "$type": "Microsoft.EditArray",
+          "changeType": "Push",
+          "arrayProperty": "user.meetings",
+          "itemProperty": "user.getGraphMeetings.value[0]"
+        },
+        {
+          "$type": "Microsoft.EditArray",
+          "changeType": "Push",
+          "arrayProperty": "user.meetings",
+          "itemProperty": "user.getGraphMeetings.value[1]"
+        },
+        {
+          "$type": "Microsoft.EditArray",
+          "changeType": "Push",
+          "arrayProperty": "user.meetings",
+          "itemProperty": "user.getGraphMeetings.value[2]"
+        }
+        // bug: the user.meetings should be a list object but not a Json array object
+      ]
+    }
+    //,{
+    //  "$type": "Microsoft.SendActivity",
+    //  "activity": "Get meetings model done"
+    //}
+  ]
+}

@@ -1,0 +1,5 @@
+# RootDialog.help
+- ```
+    I demonstrate different declarative sample scenarios.
+    [Suggestions=NoMatchRule|WaitForInput|TextInput|WelcomeRule|IntentRule|CallDialog|ExternalLanguage|Cancel]
+    ```

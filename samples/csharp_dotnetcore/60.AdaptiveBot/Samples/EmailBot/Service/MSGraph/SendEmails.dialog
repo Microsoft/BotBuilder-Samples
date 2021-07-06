@@ -1,0 +1,44 @@
+{
+  "$schema": "../../app.schema",
+  "$type": "Microsoft.AdaptiveDialog",
+  "steps": [
+    {
+      "$type": "Microsoft.IfCondition",
+      "condition": "dialog.token == null",
+      "steps": [
+        {
+          "$type": "Microsoft.OAuthPrompt",
+          "ConnectionName": "msgraph",
+          "Title": "Log in",
+          "Text": "Please log in to your email account",
+          "Property": "dialog.token"
+        }
+      ]
+    },
+    {
+      "$type": "Microsoft.HttpRequest",
+      "url": "https://graph.microsoft.com/v1.0/me/sendMail",
+      "method": "POST",
+      "header": {
+        "Authorization": "Bearer {dialog.token.Token}"
+      },
+      "body": {
+        "message": {
+          "body": {
+            "content": "{user.body}",
+            "contentType": "Text"
+          },
+          "subject": "{user.subject}",
+          "toRecipients": [
+            {
+              "emailAddress": {
+                "address": "{user.email}"
+              }
+            }
+          ]
+        }
+      },
+      "Property": "dialog.postResponse"
+    }
+  ]
+}

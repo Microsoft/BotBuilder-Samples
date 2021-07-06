@@ -1,0 +1,118 @@
+{
+  "$schema": "../../app.schema",
+  "$type": "Microsoft.AdaptiveDialog",
+  "recognizer": {
+    "$type": "Microsoft.RegexRecognizer",
+    "intents": {
+      "CreateMeetingIntent": "(?i)create meeting",
+      "HelpIntent": "(?i)help",
+      "ShowNextPageIntent": "(?i)next page meeting",
+      "UpdateMeetingIntent": "(?i)update meeting",
+      "AcceptMeetingIntent": "(?i)accept meeting",
+      "DeclineMeetingIntent": "(?i)decline meeting"
+    }
+  },
+  "rules": [
+    {
+      "$type": "Microsoft.IntentRule",
+      "intent": "UpdateMeetingIntent",
+      "steps": [
+        "UpdateMeeting"
+      ]
+    },
+    {
+      "$type": "Microsoft.IntentRule",
+      "intent": "AcceptMeetingIntent",
+      "steps": [
+        "AcceptMeeting"
+      ]
+    },
+    {
+      "$type": "Microsoft.IntentRule",
+      "intent": "DeclineMeetingIntent",
+      "steps": [
+        "DeclineMeeting"
+      ]
+    }
+  ],
+  "steps":
+  [
+    "GetDisplayMeetings",
+    {
+      "$type": "Microsoft.SendActivity",
+      "activity": "[ShowMeetingSummaryResponse(user)]"
+    },
+    {
+      "$type": "Microsoft.IfCondition",
+      "condition": "count(user.meetings) > 0",
+      "steps": [
+        // Bug: Choice input cannot accept expression as value
+        {
+          "$type": "Microsoft.SendActivity",
+          "activity": "[ShowMeetingList(user)]"
+        },
+        {
+          "$type": "Microsoft.TextInput",
+          "prompt": "[ChooseReadMeetingList(user)]",
+          "property": "dialog.choice"
+        },
+        // Question: how to use SwitchCondition
+        //{
+        //  "$type": "Microsoft.SwitchCondition",
+        //  "condition": "dialog.choice"
+        //},
+        {
+          "$type": "Microsoft.IfCondition",
+          "condition": "dialog.choice == '1'",
+          "steps": [
+            {
+              "$type": "Microsoft.SetProperty",
+              "property": "user.focusedMeeting",
+              "value": "user.meetings[0]"
+            }
+          ]
+        },
+        {
+          "$type": "Microsoft.IfCondition",
+          "condition": "dialog.choice == '2'",
+          "steps": [
+            {
+              "$type": "Microsoft.SetProperty",
+              "property": "user.focusedMeeting",
+              "value": "user.meetings[1]"
+            }
+          ]
+        },
+        {
+          "$type": "Microsoft.IfCondition",
+          "condition": "dialog.choice == '3'",
+          "steps": [
+            {
+              "$type": "Microsoft.SetProperty",
+              "property": "user.focusedMeeting",
+              "value": "user.meetings[2]"
+            }
+          ]
+        },
+
+        // Read focused meeting
+        {
+          "$type": "Microsoft.SendActivity",
+          "activity": "[ReadFocusedMeeting(user)]"
+        },
+        {
+          "$type": "Microsoft.SendActivity",
+          "activity": "[ShowMeetingCard(user.focusedMeeting)]"
+        },
+        {
+          "$type": "Microsoft.ConfirmInput",
+          "property": "dialog.confirmed",
+          "prompt": "You can say 'update meeting' or 'decline meeting' or 'accept meeting' to do action on this meeting.",
+          "alwaysPrompt": true
+        }
+
+        // todo: show overview
+      ]
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "$schema": "../../app.schema",
+  "$type": "Microsoft.AdaptiveDialog",
+  "steps": [
+    // Reset data
+    {
+      "$type": "Microsoft.SetProperty",
+      "value": "'msgraph'",
+      "property": "user.provider"
+    },
+    {
+      "$type": "Microsoft.SetProperty",
+      "value": "3",
+      "property": "user.pageSize"
+    },
+    {
+      "$type": "Microsoft.SetProperty",
+      "value": "0",
+      "property": "user.showIndex"
+    },
+    {
+      "$type": "Microsoft.SetProperty",
+      "property": "user.focusedMeeting",
+      "value": "null"
+    },
+    {
+      "$type": "Microsoft.EditArray",
+      "changeType": "Clear",
+      "arrayProperty": "user.meetings"
+    },
+    {
+      "$type": "Microsoft.EditArray",
+      "changeType": "Clear",
+      "arrayProperty": "user.attendees"
+    },
+    {
+      "$type": "Microsoft.SetProperty",
+      "value": "null",
+      "property": "user.meeting"
+    },
+    {
+      "$type": "Microsoft.SetProperty",
+      "value": "null",
+      "property": "user.subject"
+    },
+    {
+      "$type": "Microsoft.SetProperty",
+      "value": "null",
+      "property": "user.body"
+    },
+    {
+      "$type": "Microsoft.SetProperty",
+      "value": "null",
+      "property": "user.email"
+    },
+    {
+      "$type": "Microsoft.SetProperty",
+      "value": "null",
+      "property": "user.startDate"
+    },
+    {
+      "$type": "Microsoft.SetProperty",
+      "value": "null",
+      "property": "user.startTime"
+    },
+    {
+      "$type": "Microsoft.SetProperty",
+      "value": "null",
+      "property": "user.startDateTime"
+    },
+    {
+      "$type": "Microsoft.SetProperty",
+      "value": "null",
+      "property": "user.endDateTime"
+    },
+    {
+      "$type": "Microsoft.SetProperty",
+      "value": "null",
+      "property": "user.duration"
+    },
+    {
+      "$type": "Microsoft.SetProperty",
+      "value": "null",
+      "property": "user.location"
+    }
+    //{
+    //  "$type": "Microsoft.SendActivity",
+    //  "activity": "Clear done!"
+    //}
+  ]
+}

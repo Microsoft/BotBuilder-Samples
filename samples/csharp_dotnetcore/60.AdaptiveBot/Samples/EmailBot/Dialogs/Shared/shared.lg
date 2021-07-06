@@ -1,0 +1,10 @@
+﻿# ShowEmailList(user)
+- IF: {count(user.emails) == 1}
+  - [ShowEmail(user.emails[0])]
+- ELSEIF: {count(user.emails) >= 2}
+  - {join(foreach(user.emails, x,  lgTemplate('ShowEmailListItem', x)), '\n', '\n')}
+- ELSE:
+  - You should not be here.
+
+# SelectEmail
+- Which one do you want to select?

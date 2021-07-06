@@ -1,0 +1,22 @@
+{
+    "$schema": "../../app.schema",
+    "$type": "Microsoft.AdaptiveDialog",
+    "$id": "root",
+    "steps": [
+        {
+            "$type":"Microsoft.TextInput",
+            "prompt" : "Hello, what is your name?", 
+            "property": "user.name"
+        },
+        {
+            "$type":"Microsoft.SendActivity",
+            "activity": "Hello {user.name}, nice to meet you!"
+        },
+        {
+            "$type":"Microsoft.EndTurn"
+        },
+        {
+            "$type":"Microsoft.RepeatDialog"
+        }
+   ]
+}

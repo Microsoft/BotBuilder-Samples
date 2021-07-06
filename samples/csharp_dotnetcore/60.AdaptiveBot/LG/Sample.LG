@@ -1,0 +1,137 @@
+> LG files define templates that help with language generation. 
+> LG files are similar to LU files - markdown files; simple text files to manage bot's responses
+
+> Welcome template with variations as a markdown list
+> LG engine will resolve this template to one of the provided variations
+
+# WelcomeTemplate
+- Hi
+- Hello
+- Howdy
+
+> Templates can refer to other templates. Template references are enclosed in square brackets - []
+# GreetingTemplate
+- [WelcomeTemplate], what can I do for you today?
+
+> Templates can refer to entities as well. Entity references are enclosed in curly brackets - {}
+# EchoTemplate
+- [EchoPrefix] '{Activity.Text}'
+
+# EchoPrefix
+- You said
+- Roger
+- I picked up
+
+> Templates can include expressions as conditions and inline variations
+# WordGameReply
+- CASE: {GameName == 'MarcoPolo'}
+    - [WelcomeTemplate] Polo
+    - Welcome back Polo!
+- CASE: {GameName == 'HipHip'}
+    - [WelcomeTemplate] Hurray
+- DEFAULT:
+    - [WelcomeTemplate]
+
+> Templates can be parametrized
+# TimeOfDayReadOut(parameter1)
+- CASE: {parameter1 == 'morning'}
+    - Good morning
+    - Its a wonderful morning!
+- DEFAULT:
+    - Good evening
+
+# TimeOfDayExmple
+- [TimeOfDayReadOut(timeOfDay)]
+- Uh, ask me that again.. Just for fun.
+
+> You can have multi-line responses with template resolution. Multi-line content is enclosed in ```. 
+> Resolution applied to content within @{}
+> \ is escape charater.
+# MultiLineExample
+- ```
+    This is a multi-line list
+    - one
+    - two
+    - Greeting: {lgTemplate('WelcomeTemplate')}
+```
+- ```
+    This a variation
+    - three
+    - Greeting: {lgTemplate(('WelcomeTemplate')}
+```
+
+> You can include custom payload in multi-line resolution, use this for cards etc.
+# CardExample
+- ```
+    {
+        "Title": "@{lgTemplate('WelcomeTemplate')}",
+        "Images": [
+            {
+                "url": "@{lgTemplate('ImageCollection')}"
+            }
+        ],
+        "SubTitle": "This is an exmple of a card. @{lgTemplate('GreetingTemplate')}",
+        "Text": "This is a Hero Card example"
+    }
+    ```
+
+# ImageCollection
+- https://sec.ch9.ms/ch9/7ff5/e07cfef0-aa3b-40bb-9baa-7c9ef8ff7ff5/buildreactionbotframework_960.jpg
+- https://docs.microsoft.com/en-us/bot-framework/media/how-it-works/architecture-resize.png
+
+
+>> Other cool features::
+> Inline expressions in variations
+> Pre-defined functions to use in expressions 
+> Ability to independently update bot's response assets without need to redeploy bot
+> Simple text file format to easily integrate with your existing development processes
+> Command line tools to parse, validate and collate LG files
+
+> 
+> [Today,] you can expect a [high] of {high} [and] tomorrow looks really [good] 
+> [Tonight,] you can expect a [low] of {low} [but] tomorrow looks really [bad]
+
+ # PartOfDay
+- CASE: {partOfDay == 'morning'}
+    - Today 
+    - This morning 
+- CASE: {partOfDay == 'night'}
+    - Tonight 
+    - This evining
+- DEFAULT:
+    - error PartOfDay
+ 
+# HighLow
+- CASE: {partOfDay == 'morning'}
+    - high
+- CASE: {partOfDay == 'night'}
+    - low
+- DEFAULT:
+    - error HighLow
+
+# ConjunctureTemplate 
+- CASE: {isAGoodDay == 'true'}
+    - and
+- CASE: {isAGoodDay == 'false'}
+    - but
+- DEFAULT:
+    - error ConjunctureTemplate 
+
+# TempByPartOfDay
+- CASE: {partOfDay == 'morning'}
+    - {high}
+- CASE: {partOfDay == 'night'}
+    - {low}
+- DEFAULT:
+    - error TempByPartOfDay
+
+# GoodBad
+- CASE: {isAGoodDay == 'true'}
+    - good
+- CASE: {isAGoodDay == 'false'}
+    - bad
+- DEFAULT:
+    - error GoodBad
+
+# WeatherForecast
+- [PartOfDay], you can expect a [HighLow] of [TempByPartOfDay] [ConjunctureTemplate] tomorrow looks really [GoodBad]

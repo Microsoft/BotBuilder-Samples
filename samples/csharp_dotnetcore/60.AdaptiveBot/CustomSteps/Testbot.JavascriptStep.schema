@@ -1,0 +1,31 @@
+﻿{
+    "$schema": "https://raw.githubusercontent.com/Microsoft/botbuilder-tools/SchemaGen/packages/DialogSchema/src/dialogSchema.schema",
+    "$role": "unionType(Microsoft.IDialog)",
+    "title": "Javascript Step",
+    "description": "This gives you the ability to execute javascript to manipulate memory",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "property": {
+            "type": "string",
+            "title":"Property",
+            "description": "This will be the property passed in",
+            "examples": [
+                "value.birthday"
+            ]
+        },
+        "outputProperty": {
+            "type": "string",
+            "title": "Output Property",
+            "description": "This will be the property which the result will be put into",
+            "examples": [
+                "value.birthday"
+            ]
+        },
+        "script": {
+            "type": "string",
+            "title": "Script",
+            "description": "name of the script file"
+        }
+    }
+}

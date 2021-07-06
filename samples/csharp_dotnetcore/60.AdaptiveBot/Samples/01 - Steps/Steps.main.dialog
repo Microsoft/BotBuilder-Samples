@@ -1,0 +1,18 @@
+{
+    "$schema": "../../app.schema",
+    "$type": "Microsoft.AdaptiveDialog",
+    "steps": [
+        {
+            "$type": "Microsoft.SendActivity",
+            "activity": "Step 1"
+        },
+        {
+            "$type": "Microsoft.SendActivity",
+            "activity": "Step 2"
+        },
+        {
+            "$type": "Microsoft.SendActivity",
+            "activity": "Step 3"
+        }
+    ]
+}

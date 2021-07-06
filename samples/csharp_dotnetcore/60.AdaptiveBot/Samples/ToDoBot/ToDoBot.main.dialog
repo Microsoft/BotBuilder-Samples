@@ -1,0 +1,84 @@
+{
+    "$schema": "../../app.schema",
+    "$type": "Microsoft.AdaptiveDialog",
+    "autoEndDialog": false,
+    "recognizer": {
+        "$type": "Microsoft.RegexRecognizer",
+        "intents": {
+            "AddIntent": "(?i)(?:add|create) .*(?:to-do|todo|task)(?: )?(?:named (?<title>.*))?",
+            "DeleteIntent": "(?i)(?:delete|remove|clear) .*(?:to-do|todo|task)(?: )?(?:named (?<title>.*))?",
+            "ShowIntent": "(?i)(?:show|see|view) .*(?:to-do|todo|task)",
+            "ClearIntent": "(?i)(?:delete|remove|clear) (?:all|every) (?:to-dos|todos|tasks)",
+            "HelpIntent": "(?i)help",
+            "CancelIntent": "(?i)cancel|never mind"
+        }
+    },
+    "steps": [
+        {
+            "$type": "Microsoft.SendActivity",
+            "activity": "Hi! I'm a ToDo bot. Say \"add a todo named first\" to get started."
+        }
+    ],
+    "rules": [
+        {
+            "$type": "Microsoft.IntentRule",
+            "intent": "AddIntent",
+            "steps": [
+                "AddToDo"
+            ]
+        },
+        {
+            "$type": "Microsoft.IntentRule",
+            "intent": "DeleteIntent",
+            "steps": [
+                "DeleteToDo"
+            ]
+        },
+        {
+            "$type": "Microsoft.IntentRule",
+            "intent": "ClearIntent",
+            "steps": [
+                "ClearToDos"
+            ]
+        },
+        {
+            "$type": "Microsoft.IntentRule",
+            "intent": "ShowIntent",
+            "steps": [
+                "ShowToDos"
+            ]
+        },
+        {
+            "$type": "Microsoft.IntentRule",
+            "intent": "HelpIntent",
+            "steps": [
+                {
+                    "$type": "Microsoft.SendActivity",
+                    "activity": "I can add a todo, show todos, remove a todo, and clear all todos\n"
+                }
+            ]
+        },
+        {
+            "$type": "Microsoft.IntentRule",
+            "intent": "CancelIntent",
+            "steps": [
+                {
+                    "$type": "Microsoft.SendActivity",
+                    "activity": "ok."
+                },
+                {
+                    "$type": "Microsoft.EndDialog"
+                }
+            ]
+        },
+        {
+            "$type": "Microsoft.UnknownIntentRule",
+            "steps": [
+                {
+                    "$type": "Microsoft.SendActivity",
+                    "activity": "Hi! I'm a ToDo bot. Say \"add a todo named first\" to get started."
+                }
+            ]
+        }
+    ]
+}

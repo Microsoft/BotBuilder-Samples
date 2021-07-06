@@ -1,0 +1,80 @@
+﻿# ShowMeeting(meeting)
+- {meeting.subject} @ {meeting.start.dateTime}
+
+# ShowMeetingListItem(meeting)
+- $ {meeting.subject} @ {meeting.start.dateTime}
+
+# ShowMeetingSummaryResponse(user)
+- IF: {count(user.meetings) == 1}
+  - You have {count(user.meetings)} meeting today. This meeting is [ShowMeeting(user.meetings[0])].
+- ELSEIF: {count(user.meetings) >= 2}
+  - You have {count(user.meetings)} meetings today, the first meeting is [ShowMeeting(user.meetings[0])].
+- ELSEIF: {count(user.meetings) == 0}
+  - You don't have any meetings.
+- ELSE:
+  - You should not be here.
+
+# ShowMeetingList(user)
+- IF: {count(user.meetings) == 1}
+  - [ShowMeeting(user.meetings[0])]
+- ELSEIF: {count(user.meetings) >= 2}
+  - {join(foreach(user.meetings, x,  lgTemplate('ShowMeetingListItem', x)), '\n', '\n')}
+- ELSE:
+  - You should not be here.
+
+# ChooseReadMeetingList(user)
+- IF: {count(user.meetings) == 1}
+  - Do you want to read this one?
+- ELSEIF: {count(user.meetings) >= 1}
+  - Which one do you want to read? You can input things like 1, 2, 3.
+- ELSE:
+  - You should not be here.
+
+# ReadFocusedMeeting(user)
+- Here is the detail for {user.focusedMeeting.subject}:
+
+# ShowMeetingCard(x)
+- ```
+[adaptivecard
+{
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "size": "Medium",
+                    "weight": "Bolder",
+                    "text": "@{x.subject}"
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "@{x.start.dateTime} - @{x.end.dateTime}",
+                    "wrap": true,
+                    "maxLines": 5
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "@{x.bodyPreview}",
+                    "wrap": true,
+                    "maxLines": 5
+                }
+            ]
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.0"
+}
+]
+```

@@ -1,0 +1,39 @@
+{
+    "$schema": "../../app.schema",
+    "$type": "Microsoft.AdaptiveDialog",
+    "steps": [
+        {
+            "$type": "Microsoft.IntegerInput",
+            "property": "user.age",
+            "alwaysPrompt": true,
+            "prompt": "What is your age?",
+            "invalidPrompt": "Please input a number."
+        },
+        {
+            "$type": "Microsoft.SendActivity",
+            "activity": "Hello, your age is {user.age}!"
+        },
+        {
+            "$type": "Microsoft.FloatInput",
+            "property": "user.result",
+            "alwaysPrompt": true,
+            "prompt": "2 * 2.2 equals?"
+        },
+        {
+            "$type": "Microsoft.IfCondition",
+            "condition": "(user.result - 4.4) < 0.0000001",
+            "steps": [
+                {
+                    "$type": "Microsoft.SendActivity",
+                    "activity": "2 * 2.2 equals {user.result}, that's right!"
+                }
+            ],
+            "elseSteps": [
+                {
+                    "$type": "Microsoft.SendActivity",
+                    "activity": "2 * 2.2 equals {user.result}, that's wrong!"
+                }
+            ]
+        }
+    ]
+}

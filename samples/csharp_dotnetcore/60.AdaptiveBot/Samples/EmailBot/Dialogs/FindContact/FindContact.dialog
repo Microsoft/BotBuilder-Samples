@@ -1,0 +1,18 @@
+﻿{
+  "$schema": "../../app.schema",
+  "$type": "Microsoft.AdaptiveDialog",
+  "steps": [
+    {
+      "$type": "Microsoft.TextInput",
+      "prompt": "OK, please enter the contact you want to search. You can input both email address and contact name.",
+      "property": "user.email"
+    },
+    {
+      "$type": "Microsoft.IfCondition",
+      "condition": "!contains({user.email}, '@')",
+      "steps": [
+        "GetContact"
+      ]
+    }
+  ]
+}
