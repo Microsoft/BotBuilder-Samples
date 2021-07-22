@@ -1,0 +1,107 @@
+{
+  "$schema": "https://schemas.botframework.com/schemas/skills/skill-manifest-2.0.0.json",
+  "$id": "dialogSkillBot",
+  "name": "Skill bot with dialogs",
+  "version": "1.0",
+  "description": "This is a sample skill definition for multiple activity types.",
+  "publisherName": "Microsoft",
+  "privacyUrl": "https://dialogskillbot.contoso.com/privacy.html",
+  "copyright": "Copyright (c) Microsoft Corporation. All rights reserved.",
+  "license": "",
+  "iconUrl": "https://dialogskillbot.contoso.com/icon.png",
+  "tags": [
+    "sample",
+    "travel",
+    "weather",
+    "luis"
+  ],
+  "endpoints": [
+    {
+      "name": "default",
+      "protocol": "BotFrameworkV3",
+      "description": "Default endpoint for the skill.",
+      "endpointUrl": "https://dialogskillbot.contoso.com/api/messages",
+      "msAppId": "00000000-0000-0000-0000-000000000000"
+    }
+  ],
+  "activities": {
+    "bookFlight": {
+      "description": "Books a flight (multi turn).",
+      "type": "event",
+      "name": "BookFlight",
+      "value": {
+        "$ref": "#/definitions/bookingInfo"
+      },
+      "resultValue": {
+        "$ref": "#/definitions/bookingInfo"
+      }
+    },
+    "getWeather": {
+      "description": "Retrieves and returns the weather for the user's location.",
+      "type": "event",
+      "name": "GetWeather",
+      "value": {
+        "$ref": "#/definitions/location"
+      },
+      "resultValue": {
+        "$ref": "#/definitions/weatherReport"
+      }
+    },
+    "passthroughMessage": {
+      "type": "message",
+      "description": "Receives the user's utterance and attempts to resolve it using the skill's LUIS models.",
+      "value": {
+        "type": "object"
+      }
+    }
+  },
+  "definitions": {
+    "bookingInfo": {
+      "type": "object",
+      "required": [
+        "origin"
+      ],
+      "properties": {
+        "origin": {
+          "type": "string",
+          "description": "This is the origin city for the flight."
+        },
+        "destination": {
+          "type": "string",
+          "description": "This is the destination city for the flight."
+        },
+        "travelDate": {
+          "type": "string",
+          "description": "The date for the flight in YYYY-MM-DD format."
+        }
+      }
+    },
+    "weatherReport": {
+      "type": "array",
+      "description": "Array of forecasts for the next week.",
+      "items": [
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "location": {
+      "type": "object",
+      "description": "Location metadata.",
+      "properties": {
+        "latitude": {
+          "type": "number",
+          "title": "Latitude"
+        },
+        "longitude": {
+          "type": "number",
+          "title": "Longitude"
+        },
+        "postalCode": {
+          "type": "string",
+          "title": "Postal code"
+        }
+      }
+    }
+  }
+}
