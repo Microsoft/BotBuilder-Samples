@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Bot.Builder" Version="4.13.3" />
+    <PackageReference Include="Microsoft.Bot.Connector" Version="4.13.3" />
+    <PackageReference Include="Microsoft.Bot.Schema" Version="4.13.3" />
+  </ItemGroup>
+
+</Project>
