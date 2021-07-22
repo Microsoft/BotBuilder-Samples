@@ -22,6 +22,7 @@ This bot has been created using [Bot Framework](https://dev.botframework.com), i
     ```bash
     npm install
     ```
+
 - Start the bot
 
     ```bash
@@ -56,10 +57,10 @@ Use a tool like Postman or CURL to send notifcations to your bot using a Post re
 
 ### Publishing Changes to Azure Bot Service
 
-    ```bash
-    # build the TypeScript bot before you publish
-    npm run build
-    ```
+```bash
+# build the TypeScript bot before you publish
+npm run build
+```
 
 To learn more about deploying a bot to Azure, see [Deploy your bot to Azure](https://aka.ms/azuredeployment) for a complete list of deployment instructions.
 
