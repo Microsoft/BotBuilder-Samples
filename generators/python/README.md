@@ -87,19 +87,19 @@ The Empty Bot template is the minimal skeleton code for a bot.  It provides a st
 To create an Echo Bot project:
 
 ```bash
-cookiecutter https://github.com/microsoft/botbuilder-python/releases/download/Templates/echo.zip
+cookiecutter https://github.com/microsoft/botbuilder-samples/releases/download/Templates/echo.zip
 ```
 
 To create a Core Bot project:
 
 ```bash
-cookiecutter https://github.com/microsoft/botbuilder-python/releases/download/Templates/core.zip
+cookiecutter https://github.com/microsoft/botbuilder-samples/releases/download/Templates/core.zip
 ```
 
 To create an Empty Bot project:
 
 ```bash
-cookiecutter https://github.com/microsoft/botbuilder-python/releases/download/Templates/empty.zip
+cookiecutter https://github.com/microsoft/botbuilder-samples/releases/download/Templates/empty.zip
 ```
 
 When the generator is launched, it will prompt for the information required to create a new bot.
@@ -122,7 +122,7 @@ This example shows how to pass named arguments to the generator, setting the def
 
 ```bash
 # Run the generator defaulting the bot name to test_project
-cookiecutter https://github.com/microsoft/botbuilder-python/releases/download/Templates/echo.zip project_name="test_project"
+cookiecutter https://github.com/microsoft/botbuilder-samples/releases/download/Templates/echo.zip project_name="test_project"
 ```
 
 ### Generating a Bot Using --no-input
@@ -143,14 +143,14 @@ This example shows how to run the generator in --no-input mode, setting all requ
 
 ```bash
 # Run the generator, setting all command line options
-cookiecutter https://github.com/microsoft/botbuilder-python/releases/download/Templates/echo.zip --no-input project_name="test_bot" bot_description="Test description"
+cookiecutter https://github.com/microsoft/botbuilder-samples/releases/download/Templates/echo.zip --no-input project_name="test_bot" bot_description="Test description"
 ```
 
 This example shows how to run the generator in --no-input mode, using all the default command line options.  The generator will create a bot project using all the default values specified in the **Default Options** table above.
 
 ```bash
 # Run the generator using all default options
-cookiecutter https://github.com/microsoft/botbuilder-python/releases/download/Templates/echo.zip --no-input
+cookiecutter https://github.com/microsoft/botbuilder-samples/releases/download/Templates/echo.zip --no-input
 ```
 
 This example shows how to run the generator in --no-input mode, with unit tests.
