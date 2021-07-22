@@ -1,0 +1,77 @@
+{
+  "$schema": "https://raw.githubusercontent.com/OfficeDev/microsoft-teams-app-schema/preview/DevPreview/MicrosoftTeams.schema.json",
+  "manifestVersion": "devPreview",
+  "id": "<<YOUR-MICROSOFT-APP-ID>>",
+  "version": "0.0.1",
+  "packageName": "Microsoft.BotBuilderSamples.CardTabs",
+  "developer": {
+    "name": "proto",
+    "websiteUrl": "https://YourDeployedBotUrl.azurewebsites.net",
+    "privacyUrl": "https://YourDeployedBotUrl.azurewebsites.net/privacy.html",
+    "termsOfUseUrl": "https://YourDeployedBotUrl.azurewebsites.net/tou.html"
+  },
+  "name": {
+    "short": "Workday Cards",
+    "full": "Workday Adaptive Cards Prototype"
+  },
+  "description": {
+    "short": "TODO: add short description here",
+    "full": "TODO: add full description here"
+  },
+  "icons": {
+    "outline": "icon-outline.png",
+    "color": "icon-color.png"
+  },
+  "accentColor": "#D85028",
+  "configurableTabs": [],
+  "staticTabs": [
+    {
+      "entityId": "workday",
+      "name": "Home",
+      "contentBotId": "<<YOUR-MICROSOFT-APP-ID>>",
+      "scopes": [ "personal" ]
+    },
+    {
+      "entityId": "samples",
+      "name": "More",
+      "contentBotId": "<<YOUR-MICROSOFT-APP-ID>>",
+      "scopes": [ "personal" ]
+    },
+    {
+      "entityId": "about",
+      "scopes": [ "personal" ]
+    },
+    {
+      "entityId": "conversations",
+      "scopes": [ "personal" ]
+    }
+  ],
+  "bots": [
+    {
+      "botId": "<<YOUR-MICROSOFT-APP-ID>>",
+      "needsChannelSelector": true,
+      "isNotificationOnly": false,
+      "scopes": [ "team", "personal" ],
+      "commandLists": [
+        {
+          "scopes": [ "team", "personal" ],
+          "commands": [
+            {
+              "title": "Help",
+              "description": "Shows help information"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "connectors": [],
+  "composeExtensions": [],
+  "permissions": [ "identity", "messageTeamMembers" ],
+  "validDomains": [
+    "token.botframework.com",
+    "azurewebsites.net",
+    "youtube.com",
+    "ngrok.io"
+  ]
+}
