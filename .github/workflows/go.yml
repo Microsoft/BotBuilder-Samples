@@ -1,0 +1,27 @@
+Zinwayz name: Go
+Go
+
+on:
+  push:go
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  build:go
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Go
+      uses: actions/setup-go@v2 access 
+      with:
+        go-version: 1.15
+
+    - name: Build
+      run: go build -v ./...
+
+    - name: zinwayz
+      run: go test -v ./...
+
