@@ -69,9 +69,9 @@ This sample demonstrates using [Adaptive dialog][1],  [Language Generation][2] P
 > npm i -g @microsoft/botframework-cli
 ```
 - In a command prompt, navigate to `botbuilder-samples/experimental/adaptive-dialog/javascript_nodejs/todo-bot`
-- To parse RootDialog.lu to a LUIS json model
+- To parse rootDialog.lu to a LUIS json model
 ```bash
-> bf luis:convert --in ./Dialogs/RootDialog/RootDialog.lu --out ./CognitiveModels/ToDoLuisBot.luis.json --force
+> bf luis:convert --in ./dialogs/rootDialog/rootDialog.lu --out ./CognitiveModels/ToDoLuisBot.luis.json --force
 ```
 - To create a new LUIS application using this model. Note: You see [here][9] for instructions on getting your authoirng key.
 ```bash

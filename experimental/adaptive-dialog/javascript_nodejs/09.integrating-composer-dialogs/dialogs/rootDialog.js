@@ -13,7 +13,7 @@ const { SlotFillingDialog } = require('./slotFillingDialog');
 const ROOT_DIALOG = 'RootDialog';
 
 class RootDialog extends ComponentDialog {
-    constructor(userState, resourceExplorer) {
+    constructor(resourceExplorer) {
         super(ROOT_DIALOG);
 
         // Rather than explicitly coding a Waterfall we have only to declare what properties we want collected.

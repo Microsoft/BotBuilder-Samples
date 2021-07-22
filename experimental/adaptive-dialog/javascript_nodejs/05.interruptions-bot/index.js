@@ -5,7 +5,7 @@ const restify = require('restify');
 const path = require('path');
 
 // Import required bot services.
-const { BotFrameworkAdapter, ConversationState, MemoryStorage, UserState } = require('botbuilder');
+const { BotFrameworkAdapter, ConversationState, MemoryStorage, UserState, useBotState } = require('botbuilder');
 
 // Import our custom bot class that provides a turn handling function.
 const { DialogBot } = require('./bots/dialogBot');
@@ -53,9 +53,11 @@ const memoryStorage = new MemoryStorage();
 const conversationState = new ConversationState(memoryStorage);
 const userState = new UserState(memoryStorage);
 
+useBotState(adapter, conversationState, userState);
+
 // Create the main dialog.
 const dialog = new RootDialog();
-const bot = new DialogBot(conversationState, userState, dialog);
+const bot = new DialogBot(dialog);
 
 // Create HTTP server.
 const server = restify.createServer();

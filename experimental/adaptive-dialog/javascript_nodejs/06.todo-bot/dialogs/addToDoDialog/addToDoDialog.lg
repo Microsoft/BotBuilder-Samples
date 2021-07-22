@@ -1,7 +1,7 @@
 ﻿> Language Generation definition file. 
 > See https://aka.ms/language-generation to learn more
 
-[Root LG](../RootDialog/RootDialog.lg)
+[Root LG](../rootDialog/rootDialog.lg)
 
 # HelpAddToDo
 - ${HelpPrefix()}, you can simply say the title of your todo to add it.

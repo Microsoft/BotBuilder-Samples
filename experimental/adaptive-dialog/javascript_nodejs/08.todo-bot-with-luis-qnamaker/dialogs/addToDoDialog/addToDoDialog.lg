@@ -2,7 +2,7 @@
 > See https://aka.ms/language-generation to learn more
 
 > You can now add reference to other .lg files.
-[Common](../Common/Common.lg)
+[Common](../common/common.lg)
 
 # HelpAddItem
 - ${HelpPrefix()}, you can simply say an item to add it to a list. You can pick from one of the list types supported - todo/ grocery/ shopping

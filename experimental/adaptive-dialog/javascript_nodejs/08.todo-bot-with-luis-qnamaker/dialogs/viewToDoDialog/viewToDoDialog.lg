@@ -2,7 +2,7 @@
 > See https://aka.ms/language-generation to learn more
 
 > You can now add reference to other .lg files.
-[Common](../Common/Common.lg)
+[Common](../common/common.lg)
 
 > This template uses inline expressions. Expressions are defined using the common expression language. 
 > See https://github.com/Microsoft/BotBuilder-Samples/tree/master/experimental/common-expression-language to learn more.

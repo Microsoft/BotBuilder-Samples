@@ -5,13 +5,12 @@ const {
     ComponentDialog,
     NumberPrompt,
     TextPrompt,
-    WaterfallDialog
+    WaterfallDialog,
 } = require('botbuilder-dialogs');
+const { AdaptiveDialog, BeginDialog, DialogExpression, EndDialog, NumberInput, OnBeginDialog, TemplateEngineLanguageGenerator } = require('botbuilder-dialogs-adaptive');
+
 const { SlotDetails } = require('./slotDetails');
 const { SlotFillingDialog } = require('./slotFillingDialog');
-
-const { ActivityTemplate, AdaptiveDialog, BeginDialog, DialogExpression, EndDialog, NumberInput, OnBeginDialog, TemplateEngineLanguageGenerator } = require('botbuilder-dialogs-adaptive');
-const { BoolExpression, NumberExpression, StringExpression, ValueExpression } = require('adaptive-expressions');
 
 const ROOT_DIALOG = 'RootDialog';
 const ADAPTIVE_DIALOG = 'AdaptiveDialog';
@@ -49,39 +48,39 @@ class RootDialog extends ComponentDialog {
                 // any options passed into adaptive dialog is automatically available under dialog.xxx
                 // get user age
                 new NumberInput().configure({
-                    property: new StringExpression('dialog.userage'),
+                    property: 'dialog.userage',
                     // use information passed in to the adaptive dialog.
-                    prompt: new ActivityTemplate('Hello ${dialog.fullname.first}, what is your age?'),
+                    prompt: 'Hello ${dialog.fullname.first}, what is your age?',
                     validations: [
                         'int(this.value) >= 1',
                         'int(this.value) <= 150'
                     ],
-                    invalidPrompt: new ActivityTemplate('Sorry, ${this.value} does not work. Looking for age to be between 1-150. What is your age?'),
-                    unrecognizedPrompt: new ActivityTemplate('Sorry, I did not understand ${this.value}. What is your age?'),
-                    maxTurnCount: new NumberExpression(3),
-                    defaultValue: new ValueExpression('=30'),
-                    defaultValueResponse: new ActivityTemplate("Sorry, this is not working. For now, I'm setting your age to ${this.defaultValue}"),
-                    allowInterruptions: new BoolExpression(false)
+                    invalidPrompt: 'Sorry, ${this.value} does not work. Looking for age to be between 1-150. What is your age?',
+                    unrecognizedPrompt: 'Sorry, I did not understand ${this.value}. What is your age?',
+                    maxTurnCount: 3,
+                    defaultValue: '=30',
+                    defaultValueResponse: "Sorry, this is not working. For now, I'm setting your age to ${this.defaultValue}",
+                    allowInterruptions: false
                 }),
                 new NumberInput().configure({
-                    property: new StringExpression('dialog.shoesize'),
-                    prompt: new ActivityTemplate('Please enter your shoe size.'),
-                    invalidPrompt: new ActivityTemplate('Sorry ${this.value} does not work. You must enter a size between 0 and 16. Half sizes are acceptable.'),
+                    property: 'dialog.shoesize',
+                    prompt: 'Please enter your shoe size.',
+                    invalidPrompt: 'Sorry ${this.value} does not work. You must enter a size between 0 and 16. Half sizes are acceptable.',
                     validations: [
                         // size can only between 0-16
                         'int(this.value) >= 0 && int(this.value) <= 16',
                         // can only full or half size
                         "isMatch(string(this.value), '^[0-9]+(\\.5)*$')"
                     ],
-                    allowInterruptions: new BoolExpression(false)
+                    allowInterruptions: false
                 }),
                 new BeginDialog().configure({
                     dialog: new DialogExpression('address'),
-                    resultProperty: new StringExpression('dialog.address')
+                    resultProperty: 'dialog.address'
                 }),
                 // return everything under dialog scope.
                 new EndDialog().configure({
-                    value: new ValueExpression('=dialog')
+                    value: '=dialog'
                 })
             ])
         ];

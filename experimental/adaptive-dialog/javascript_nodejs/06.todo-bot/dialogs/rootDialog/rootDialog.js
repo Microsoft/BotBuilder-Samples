@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+const { LuisAdaptiveRecognizer } = require('botbuilder-ai');
 const { ComponentDialog } = require('botbuilder-dialogs');
-const { CancelAllDialogs, BeginDialog, OnIntent, LuisAdaptiveRecognizer, ForEach, OnConversationUpdateActivity, IfCondition, AdaptiveDialog, SendActivity, TemplateEngineLanguageGenerator } = require('botbuilder-dialogs-adaptive');
+const { AdaptiveDialog, BeginDialog, CancelAllDialogs, ForEach, IfCondition, OnConversationUpdateActivity, OnIntent, SendActivity, TemplateEngineLanguageGenerator } = require('botbuilder-dialogs-adaptive');
 const { Templates } = require('botbuilder-lg');
-const { StringExpression, BoolExpression } = require('adaptive-expressions');
 
 const { AddToDoDialog } = require('../addToDoDialog/addToDoDialog');
 const { DeleteToDoDialog } = require('../deleteToDoDialog/deleteToDoDialog');
@@ -56,25 +56,23 @@ class RootDialog extends ComponentDialog {
     createLuisRecognizer() {
         if (process.env.LuisAppId === "" || process.env.LuisAPIHostName === "" || process.env.LuisAPIKey === "")
             throw `Sorry, you need to configure your LUIS application and update .env file.`;
-        return new LuisAdaptiveRecognizer().configure(
-            {
-                endpoint: new StringExpression(process.env.LuisAPIHostName),
-                endpointKey: new StringExpression(process.env.LuisAPIKey),
-                applicationId: new StringExpression(process.env.LuisAppId)
-            }
-        );
+        return new LuisAdaptiveRecognizer().configure({
+            endpoint: process.env.LuisAPIHostName,
+            endpointKey: process.env.LuisAPIKey,
+            applicationId: process.env.LuisAppId
+        });
     }
 
     welcomeUserSteps() {
         return [
             // Iterate through membersAdded list and greet user added to the conversation.
             new ForEach().configure({
-                itemsProperty: new StringExpression('turn.activity.membersAdded'),
+                itemsProperty: 'turn.activity.membersAdded',
                 actions: [
                     // Note: Some channels send two conversation update events - one for the Bot added to the conversation and another for user.
                     // Filter cases where the bot itself is the recipient of the message.
                     new IfCondition().configure({
-                        condition: new BoolExpression('$foreach.value.name != turn.activity.recipient.name'),
+                        condition: '$foreach.value.name != turn.activity.recipient.name',
                         actions: [
                             new SendActivity('${IntroMessage()}')
                         ]

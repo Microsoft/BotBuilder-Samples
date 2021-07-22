@@ -3,8 +3,7 @@
 
 const path = require('path');
 const { ComponentDialog, ListStyle } = require('botbuilder-dialogs');
-const { ActivityTemplate, AdaptiveDialog, Case, ChoiceInput, ForEach, IfCondition, OnConversationUpdateActivity, OnUnknownIntent, RepeatDialog, SendActivity, SwitchCondition, TemplateEngineLanguageGenerator } = require('botbuilder-dialogs-adaptive');
-const { ArrayExpression, BoolExpression, EnumExpression, StringExpression } = require('adaptive-expressions');
+const { AdaptiveDialog, Case, ChoiceInput, ForEach, IfCondition, OnConversationUpdateActivity, OnUnknownIntent, RepeatDialog, SendActivity, SwitchCondition, TemplateEngineLanguageGenerator } = require('botbuilder-dialogs-adaptive');
 const { Templates } = require('botbuilder-lg');
 
 const ROOT_DIALOG = 'rootDialog';
@@ -32,12 +31,12 @@ class RootDialog extends ComponentDialog {
         // Iterate through membersAdded list and greet user added to the conversation.
         return [
             new ForEach().configure({
-                itemsProperty: new StringExpression('turn.activity.membersAdded'),
+                itemsProperty: 'turn.activity.membersAdded',
                 actions: [
                     // Note: Some channels send two conversation update events - one for the Bot added to the conversation and another for user.
                     // Filter cases where the bot itself is the recipient of the message.
                     new IfCondition().configure({
-                        condition: new BoolExpression('$foreach.value.name != turn.activity.recipient.name'),
+                        condition: '$foreach.value.name != turn.activity.recipient.name',
                         actions: [
                             new SendActivity('${IntroMessage()}')
                         ]
@@ -50,11 +49,11 @@ class RootDialog extends ComponentDialog {
     onBeginDialogSteps() {
         return [
             new ChoiceInput().configure({
-                property: new StringExpression('turn.userChoice'),
-                prompt: new ActivityTemplate('${CardChoice()}'),
-                style: new EnumExpression(ListStyle.auto),
-                choices: new ArrayExpression(this.getChoices()),
-                alwaysPrompt: new BoolExpression(true)
+                property: 'turn.userChoice',
+                prompt: '${CardChoice()}',
+                style: ListStyle.auto,
+                choices: this.getChoices(),
+                alwaysPrompt: true
             }),
             new SwitchCondition('turn.userChoice', [new SendActivity('${AllCards()}')], this.getSwitchCases()),
             new RepeatDialog()

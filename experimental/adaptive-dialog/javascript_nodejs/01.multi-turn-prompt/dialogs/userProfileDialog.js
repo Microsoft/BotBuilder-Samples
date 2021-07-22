@@ -2,9 +2,8 @@
 // Licensed under the MIT License.
 
 const { ComponentDialog } = require('botbuilder-dialogs');
-const { NumberInput, AttachmentInput, ConfirmInput, IfCondition, ActivityTemplate, AdaptiveDialog, TextInput, SendActivity, TemplateEngineLanguageGenerator, OnBeginDialog } = require('botbuilder-dialogs-adaptive');
+const { AdaptiveDialog, AttachmentInput, ConfirmInput, IfCondition, NumberInput, OnBeginDialog, SendActivity, TemplateEngineLanguageGenerator, TextInput } = require('botbuilder-dialogs-adaptive');
 const { Templates } = require('botbuilder-lg');
-const { StringExpression, BoolExpression } = require('adaptive-expressions');
 
 const path = require('path');
 
@@ -22,13 +21,13 @@ class UserProfileDialog extends ComponentDialog {
                     new TextInput().configure(
                         {
                             // Set the output of the text input to this property in memory.
-                            property: new StringExpression('user.userProfile.Transport'),
-                            prompt: new ActivityTemplate('${ModeOfTransportPrompt()}')
+                            property: 'user.userProfile.Transport',
+                            prompt: '${ModeOfTransportPrompt()}'
                         }),
                     new TextInput().configure(
                         {
-                            property: new StringExpression('user.userProfile.Name'),
-                            prompt: new ActivityTemplate('${AskForName()}')
+                            property: 'user.userProfile.Name',
+                            prompt: '${AskForName()}'
                         }),
                     // SendActivity supports full language generation resolution.
                     // See here to learn more about language generation
@@ -36,19 +35,19 @@ class UserProfileDialog extends ComponentDialog {
                     new SendActivity('${AckName()}'),
                     new ConfirmInput().configure(
                         {
-                            property: new StringExpression('turn.ageConfirmation'),
-                            prompt: new ActivityTemplate('${AgeConfirmPrompt()}')
+                            property: 'turn.ageConfirmation',
+                            prompt: '${AgeConfirmPrompt()}'
                         }),
                     new IfCondition().configure(
                         {
                             // All conditions are expressed using the common expression language.
                             // See https://aka.ms/adaptive-expressions to learn more
-                            condition: new BoolExpression('turn.ageConfirmation == true'),
+                            condition: 'turn.ageConfirmation == true',
                             actions: [
                                 new NumberInput().configure(
                                     {
-                                        prompt: new ActivityTemplate('${AskForAge()}'),
-                                        property: new StringExpression('user.userProfile.Age'),
+                                        prompt: '${AskForAge()}',
+                                        property: 'user.userProfile.Age',
                                         // Add validations
                                         validations: [
                                             // Age must be greater than or equal 1
@@ -56,8 +55,8 @@ class UserProfileDialog extends ComponentDialog {
                                             // Age must be less than 150
                                             'int(this.value) < 150'
                                         ],
-                                        invalidPrompt: new ActivityTemplate('${AskForAge.invalid()}'),
-                                        unrecognizedPrompt: new ActivityTemplate('${AskForAge.unRecognized()}')
+                                        invalidPrompt: '${AskForAge.invalid()}',
+                                        unrecognizedPrompt: '${AskForAge.unRecognized()}'
                                     }),
                                 new SendActivity('${UserAgeReadBack()}')
                             ],
@@ -67,7 +66,7 @@ class UserProfileDialog extends ComponentDialog {
                         }),
                     new IfCondition().configure(
                         {
-                            condition: new BoolExpression('turn.activity.channelId == "msteams"'),
+                            condition: 'turn.activity.channelId == "msteams"',
                             actions: [
                                 // This attachment prompt example is not designed to work for Teams attachments, so skip it in this case
                                 new SendActivity('Skipping attachment prompt in Teams channel...')
@@ -75,19 +74,19 @@ class UserProfileDialog extends ComponentDialog {
                             elseActions: [
                                 new AttachmentInput().configure(
                                     {
-                                        prompt: new ActivityTemplate('${AskForImage()}'),
-                                        property: new StringExpression('user.userProfile.picture'),
+                                        prompt: '${AskForImage()}',
+                                        property: 'user.userProfile.picture',
                                         validations: [
                                             'this.value.contentType == "image/jpeg" || this.value.contentType == "image/png"'
                                         ],
-                                        invalidPrompt: new ActivityTemplate('${AskForImage.Invalid()}')
+                                        invalidPrompt: '${AskForImage.Invalid()}'
                                     })
                             ]
                         }),
                     new ConfirmInput().configure(
                         {
-                            prompt: new ActivityTemplate('${ConfirmPrompt()}'),
-                            property: new StringExpression('turn.finalConfirmation')
+                            prompt: '${ConfirmPrompt()}',
+                            property: 'turn.finalConfirmation'
                         }),
                     // Use LG template to come back with the final read out.
                     // This LG template is a great example of what logic can be wrapped up in LG sub-system.

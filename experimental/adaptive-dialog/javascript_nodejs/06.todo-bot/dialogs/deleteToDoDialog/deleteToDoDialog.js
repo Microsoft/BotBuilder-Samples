@@ -2,9 +2,8 @@
 // Licensed under the MIT License.
 
 const { ComponentDialog } = require('botbuilder-dialogs');
-const { ActivityTemplate, AdaptiveDialog, ArrayChangeType, BeginDialog, CodeAction, DeleteProperty, EditArray, EndDialog, IfCondition, OnBeginDialog, RepeatDialog, SendActivity, TemplateEngineLanguageGenerator, TextInput } = require('botbuilder-dialogs-adaptive');
+const { AdaptiveDialog, ArrayChangeType, BeginDialog, CodeAction, DeleteProperty, EditArray, EndDialog, IfCondition, OnBeginDialog, RepeatDialog, SendActivity, TemplateEngineLanguageGenerator, TextInput } = require('botbuilder-dialogs-adaptive');
 const { Templates } = require('botbuilder-lg');
-const { EnumExpression, StringExpression, BoolExpression, ValueExpression } = require('adaptive-expressions');
 
 const path = require('path');
 
@@ -22,7 +21,7 @@ class DeleteToDoDialog extends ComponentDialog {
                     new IfCondition().configure({
                         // All conditions are expressed using the common expression language.
                         // See https://github.com/Microsoft/BotBuilder-Samples/tree/master/experimental/common-expression-language to learn more
-                        condition: new BoolExpression('user.todos == null || count(user.todos) <= 0'),
+                        condition: 'user.todos == null || count(user.todos) <= 0',
                         actions: [
                             new SendActivity('${DeleteEmptyList()}'),
                             new SendActivity('${WelcomeActions()}'),
@@ -41,34 +40,34 @@ class DeleteToDoDialog extends ComponentDialog {
                     // new SaveEntity('@todoTitle_patternAny[0]', 'turn.todoTitle'),
                     new CodeAction(this.getToDoTitleToDelete),
                     new IfCondition().configure({
-                        condition: new BoolExpression('turn.todoTitle == null'),
+                        condition: 'turn.todoTitle == null',
                         actions: [
                             // First show the current list of Todos
                             new BeginDialog('VIEW_TO_DO_DIALOG'),
                             new TextInput().configure({
-                                property: new StringExpression('turn.todoTitle'),
-                                prompt: new ActivityTemplate('${GetToDoTitleToDelete()}'),
+                                property: 'turn.todoTitle',
+                                prompt: '${GetToDoTitleToDelete()}',
                                 // Allow interruptions enable interruptions while the user is in the middle of this prompt
                                 // The value to allow interruptions is an expression so you can examine any property to decide if
                                 // interruptions are allowed or not. In this sample, we are not allowing interruptions
-                                allowInterruptions: new BoolExpression(false)
+                                allowInterruptions: false
                             })
                         ]
                     }),
                     new IfCondition().configure({
-                        condition: new BoolExpression('contains(user.todos, turn.todoTitle) == false'),
+                        condition: 'contains(user.todos, turn.todoTitle) == false',
                         actions: [
                             new SendActivity('${TodoNotFound()}'),
                             new DeleteProperty().configure({
-                                property: new StringExpression('turn.todoTitle')
+                                property: 'turn.todoTitle'
                             }),
                             new RepeatDialog()
                         ]
                     }),
                     new EditArray().configure({
-                        itemsProperty: new StringExpression('user.todos'),
-                        changeType: new EnumExpression(ArrayChangeType.remove),
-                        value: new ValueExpression('=turn.todoTitle')
+                        itemsProperty: 'user.todos',
+                        changeType: ArrayChangeType.remove,
+                        value: '=turn.todoTitle'
                     }),
                     new SendActivity('${DeleteReadBack()}'),
                     new EndDialog()

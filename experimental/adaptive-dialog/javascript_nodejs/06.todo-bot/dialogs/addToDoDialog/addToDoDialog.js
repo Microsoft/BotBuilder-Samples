@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-const { BoolExpression, EnumExpression, NumberExpression, StringExpression, ValueExpression } = require('adaptive-expressions');
 const { ComponentDialog } = require('botbuilder-dialogs');
-const { AdaptiveDialog, ActivityTemplate, ArrayChangeType, ConfirmInput, EditArray, EndDialog, IfCondition, IntentPattern, OnBeginDialog, OnIntent, RegexRecognizer, SendActivity, SetProperty, TextInput, TemplateEngineLanguageGenerator } = require('botbuilder-dialogs-adaptive');
+const { AdaptiveDialog, ArrayChangeType, ConfirmInput, EditArray, EndDialog, IfCondition, OnBeginDialog, OnIntent, RegexRecognizer, SendActivity, SetProperty, TextInput, TemplateEngineLanguageGenerator } = require('botbuilder-dialogs-adaptive');
 const { Templates } = require('botbuilder-lg');
 
 const path = require('path');
@@ -24,26 +23,26 @@ class AddToDoDialog extends ComponentDialog {
             triggers: [
                 new OnBeginDialog([
                     // Take todo title if we already have it from root dialog's LUIS model.
-                    // This is the title entity defined in ../RootDialog/RootDialog.lu.
+                    // This is the title entity defined in ../rootDialog/rootDialog.lu.
                     // There is one LUIS application for this bot. So any entity captured by the rootDialog
                     // will be automatically available to child dialog.
                     // @EntityName is a short-hand for turn.entities.<EntityName>. Other useful short-hands are
                     //     #IntentName is a short-hand for turn.intents.<IntentName>
                     //     $PropertyName is a short-hand for dialog.<PropertyName>
                     new SetProperty().configure({
-                        property: new StringExpression('turn.todoTitle'),
-                        value: new ValueExpression('=@todoTitle')
+                        property: 'turn.todoTitle',
+                        value: '=@todoTitle'
                     }),
                     // TextInput by default will skip the prompt if the property has value.
                     new TextInput().configure({
-                        property: new StringExpression('turn.todoTitle'),
-                        prompt: new ActivityTemplate('${GetToDoTitle()}')
+                        property: 'turn.todoTitle',
+                        prompt: '${GetToDoTitle()}'
                     }),
                     // Add the new todo title to the list of todos. Keep the list of todos in the user scope.
                     new EditArray().configure({
-                        itemsProperty: new StringExpression('user.todos'),
-                        changeType: new EnumExpression(ArrayChangeType.push),
-                        value: new ValueExpression('=turn.todoTitle')
+                        itemsProperty: 'user.todos',
+                        changeType: ArrayChangeType.push,
+                        value: '=turn.todoTitle'
                     }),
                     new SendActivity('${AddToDoReadBack()}')
                     // All child dialogs will automatically end if there are no additional steps to execute.
@@ -52,31 +51,31 @@ class AddToDoDialog extends ComponentDialog {
                 ]),
                 new OnIntent('None', [], [
                     new SetProperty().configure({
-                        property: new StringExpression('turn.todoTitle'),
-                        value: new ValueExpression('=turn.activity.text')
+                        property: 'turn.todoTitle',
+                        value: '=turn.activity.text'
                     })
                 ]),
                 new OnIntent('Help', [], [new SendActivity('${HelpAddToDo()}')]),
                 new OnIntent('Cancel', [], [
                     new ConfirmInput().configure({
-                        property: new StringExpression('turn.addTodo.cancelConfirmation'),
-                        prompt: new ActivityTemplate('${ConfirmCancellation()}'),
+                        property: 'turn.addTodo.cancelConfirmation',
+                        prompt: '${ConfirmCancellation()}',
                         // Allow interruptions is an expression. So you can write any expression to determine if an interruption should be allowed.
                         // In this case, we will disallow interruptions since this is a cancellation confirmation.
-                        allowInterruptions: new BoolExpression(false),
+                        allowInterruptions: false,
                         // Controls the number of times user is prompted for this input.
-                        maxTurnCount: new NumberExpression(1),
+                        maxTurnCount: 1,
                         // Default value to use if we have hit the MaxTurnCount
-                        defaultValue: new BoolExpression('=false'),
+                        defaultValue: '=false',
                         // You can refer to properties of this input via %propertyName notation.
                         // The default response is sent if we have prompted the user for MaxTurnCount number of times
                         // and if a default value is assumed for the property.
-                        defaultValueResponse: new ActivityTemplate("Sorry, I do not recognize '${this.value}'. I'm going with '${%DefaultValue}' for now to be safe.")
+                        defaultValueResponse: "Sorry, I do not recognize '${this.value}'. I'm going with '${%DefaultValue}' for now to be safe."
                     }),
                     new IfCondition().configure({
                         // All conditions are expressed using the common expression language.
                         // See https://github.com/Microsoft/BotBuilder-Samples/tree/master/experimental/common-expression-language to learn more
-                        condition: new BoolExpression('turn.addTodo.cancelConfirmation == true'),
+                        condition: 'turn.addTodo.cancelConfirmation == true',
                         actions: [
                             new SendActivity('${CancelAddTodo()}'),
                             new EndDialog()
@@ -93,13 +92,12 @@ class AddToDoDialog extends ComponentDialog {
     }
 
     createRegExRecognizer() {
-        const recognizer = new RegexRecognizer();
-        recognizer.intents = [
-            new IntentPattern('Help', '(?i)help'),
-            new IntentPattern('Cancel', '(?i)cancel|never mind')
-        ];
-
-        return recognizer;
+        return new RegexRecognizer().configure({
+            intents: [
+                { intent: 'Help', pattern: '(?i)help' },
+                { intent: 'Cancel', pattern: '(?i)cancel|never mind' }
+            ]
+        });
     }
 }
 
