@@ -1,0 +1,22 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.2",
+    "body": [
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "RichTextBlock",
+                    "inlines": [
+                        {
+                            "type": "TextRun",
+                            "text": "✅ Success!"
+                        }
+                    ]
+                }
+            ],
+            "style": "good"
+        }
+    ]
+}

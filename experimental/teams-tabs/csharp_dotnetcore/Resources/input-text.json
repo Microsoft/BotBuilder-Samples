@@ -1,0 +1,29 @@
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.0",
+  "type": "AdaptiveCard",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Enter Text Here",
+      "weight": "bolder",
+      "isSubtle": false
+    },
+    {
+      "type": "Input.Text",
+      "id": "usertext",
+      "spacing": "none",
+      "isMultiLine": "true",
+      "placeholder": "add some text and submit"
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Submit"
+    }
+  ]
+}

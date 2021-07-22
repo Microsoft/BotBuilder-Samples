@@ -1,0 +1,190 @@
+{
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "Container",
+            "bleed": true,
+            "style": "emphasis",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Admin Dashboard",
+                    "fontType": "Default",
+                    "size": "Medium",
+                    "weight": "Bolder"
+                }
+            ],
+            "spacing": "None"
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "weight": "Bolder",
+                            "text": "Configure the App",
+                            "wrap": true
+                        },
+                        {
+                            "type": "TextBlock",
+                            "spacing": "None",
+                            "text": "Decide what features you want enabled/disabled",
+                            "isSubtle": true,
+                            "wrap": true,
+                            "fontType": "Default",
+                            "weight": "Lighter"
+                        }
+                    ],
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "width": "150px",
+                    "items": [
+                        {
+                            "type": "ActionSet",
+                            "actions": [
+                                {
+                                    "type": "Action.Submit",
+                                    "title": "Configure"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "weight": "Bolder",
+                            "wrap": true,
+                            "text": "Diagnostics"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "spacing": "None",
+                            "text": "Troubleshooting a problem or needing to log out",
+                            "isSubtle": true,
+                            "weight": "Lighter",
+                            "fontType": "Default",
+                            "wrap": true
+                        }
+                    ],
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "width": "150px",
+                    "items": [
+                        {
+                            "type": "ActionSet",
+                            "actions": [
+                              {
+                                "type": "Action.Submit",
+                                "title": "Diagnostics"
+                              }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "separator": true,
+            "spacing": "Medium"
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "weight": "Bolder",
+                            "text": "Disconnect",
+                            "wrap": true
+                        },
+                        {
+                            "type": "TextBlock",
+                            "spacing": "None",
+                            "text": "⚠️ Taking this action will disconnect Tabs from Teams.",
+                            "isSubtle": true,
+                            "wrap": true,
+                            "weight": "Lighter"
+                        }
+                    ],
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "width": "150px",
+                    "items": [
+                        {
+                            "type": "ActionSet",
+                            "actions": [
+                                {
+                                    "type": "Action.Submit",
+                                    "title": "Disconnect"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "separator": true,
+            "spacing": "Medium"
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "weight": "Bolder",
+                            "text": "Services Agreement",
+                            "wrap": true
+                        },
+                        {
+                            "type": "TextBlock",
+                            "spacing": "None",
+                            "text": "Status: ENABLED",
+                            "isSubtle": true,
+                            "wrap": true,
+                            "weight": "Lighter"
+                        }
+                    ],
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "width": "150px",
+                    "items": [
+                        {
+                            "type": "ActionSet",
+                            "actions": [
+                                {
+                                    "type": "Action.Submit",
+                                    "title": "Disable"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "separator": true,
+            "spacing": "Medium"
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.2"
+}

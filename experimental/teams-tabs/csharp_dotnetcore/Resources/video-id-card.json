@@ -1,0 +1,44 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "Video Player",
+          "weight": "Bolder",
+          "size": "Medium"
+        }
+      ]
+    },
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "Enter the ID of a YouTube video to play in a dialog",
+          "wrap": true
+        },
+        {
+          "type": "Input.Text",
+          "id": "youTubeVideoId",
+          "value": ""
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Update",
+      "data": {
+        "msteams": {
+          "type": "task/fetch"
+        }
+      }
+    }
+  ]
+}
