@@ -4,7 +4,7 @@ The Bot Framework has a rich collection of conversational building blocks, but
 creating a bot that feels natural to converse with requires understanding and
 coordinating across language understanding, language generation and dialog
 management. To simplify this process and capture best practices, we've created
-the [bf-generate][bf-generate] plugin for the [BotFramework CLI tool][bf]. The
+the [bf-generate][bf-generate] plugin for the [BotFramework CLI tool][bf], which is also implemented as the [form dialogs feature in the Bot Framework Composer][link to Getting Started with form dialogs]. The
 generated dialogs make use of event-driven adaptive dialogs with a rich and
 evolving set of capabilities including:
 
@@ -16,7 +16,8 @@ evolving set of capabilities including:
 - Cancel
 - Confirmation
 
-**Ready to [Get Started][start]?** If not, keep reading for more information.
+## Get started
+**Ready to get started?** Follow instructions for the [bf dialog:generate][start] CLI command or [form dialogs in Composer][link to Getting Started with form dialogs] or keep reading for more information.
 
 We welcome your feedback as we work through this feature - see the
 [Feedback](#feedback) section for details on how you can help shape the future
@@ -24,23 +25,19 @@ of this tool.
 
 ## Overview
 
-The `bf-generate` plugin is an experimental plugin for the `bf cli` tool that
-generates adaptive dialog assets. The overall workflow for generation is (see
-[Get Started][start] for detailed instructions):
+Dialog generation is an experimental feature that generates adaptive dialog assets. It is available using the **bf dialog:generate** command that is provided with the `bf cli` tool or the [form dialog feature][link to Getting Started with form dialogs] when using Composer. The overall workflow for either option is the same:
 
-1. Define your [schema](#schema-file) with optional extensions.
-2. Generate your dialog assets using [dialog:generate][bf-generate].
-3. Run the generated assets using your own runtime, or use the [RunBot][runbot]
-   runtime if you use standard Bot Framework SDK components.
-4. Test your bot using the [Bot Framework Emulator][emulator].
-5. You can modify the generated assets using [Visual Studio Code][vscode] which
-   supports IntelliSense and validation according to your runtime schema.
-   Eventually you will also be able to edit using [Bot Framework
-   Composer][composer].
-6. If you change your schema you can update the generated assets using the
-   `--merge` option.
+1. **Define your property schema.**
+2. **Generate your dialog assets.**
+3. **Run the generated assets.**
+4. **Test your bot using the [Bot Framework Emulator][emulator].**
+5. **Customize the generated assets.** You can use [Visual Studio Code][vscode] which
+   supports IntelliSense and validation according to your runtime schema or you can use Composer.
+6. **If you change your schema over time, update the generated assets.**
 
-There are three key components to understand, which are outlined below.
+## Components
+
+There are four key components in dialog generation, which are outlined below.
 
 ### JSON Schema .form File
 
@@ -50,20 +47,22 @@ using [JSON Schema][JSONSchema]. You can use the normal mechanisms including
 `$ref` and `allOf` which will be resolved into a single schema.  Your file
 should end in the `.form` extension.
 
+If using the [form dialogs feature in the Bot Framework Composer][link to Getting Started with form dialogs], Composer will structure the JSON for
+
 For additional information see:
 
 - [Schema overview][schema]
 - [Sample schemas][sample-schemas]
 
-### Templates
+### Bot response templates
 
-Templates are `.lg` files the generation tool uses to inject intelligence into
+Bot response templates are `.lg` files the generation tool uses to inject intelligent bot responses into
 your generated dialogs. They handle things like ambiguity resolution,
 interruption, cancellation and more, as well as allowing you to map complex
 pre-built entity types to your properties.
 
 In general, you won't need to understand how they work, or write any yourself -
-the tool comes with a set of pre-built templates that are sufficient for most
+the `bf-generate` plugin and the [form dialogs feature in Composer][link to Getting Started with form dialogs] come with a set of pre-built templates that are sufficient for most
 cases. However, you may need to know what templates are available for you when
 creating your schema in order to map your properties to entities.
 
@@ -75,9 +74,11 @@ For additional information see:
 ### Merging
 
 Once you have generated a bot and customized it, you might want to change your
-schema and generate again.  In order to support this, the --merge flag will
-merge the newly generated assets into your existing assets.  The merge should
-not overwrite any of your work, but it is a good idea to commit before merging.
+schema and generate again. Merging enables you to add the newly generated assets to your existing assets, without losing your customizations.
+
+With the `bf-generate` plugin merging is enabled by the `--merge` flag. With Composer, merging occurs when you regenerate your dialog assets.
+
+The merge should not overwrite any of your work, but it is a good idea to commit before merging.
 Rules for merging:
  1) A file unchanged since last generated will be overwritten by the new file.
  2) A changed file will have its .lg/.lu enum or .dialog triggers overwritten,
@@ -93,7 +94,7 @@ Rules for merging:
  6) If a file has changed and cannot be updated there will be a message to merge
     manually.
     
-### Bot Runtime
+### Bot runtime
 
 The generation tool creates a set of adaptive assets for your bot.  Included in
 those assets are two scripts:
@@ -102,8 +103,9 @@ those assets are two scripts:
 * `run [region] [luis authoring key]` which will use [RunBot][runbot] to run
   your bot if you use just SDK components.
 
+If using form dialogs in Composer, Composer will use its own runtime by default.
 
-### Use Cases
+## Basic use cases
 
 Currently, generating dialogs works best for "slot/form-filling" style bots -
 bots that collect a related set of information from a user in order to complete
@@ -114,8 +116,11 @@ a task. You can use this tool to:
   needs.
 - Explore a 'best-practices' bot for examples of how to handle complex language
   interactions with adaptive dialogs.
-  
-## Adding chit-chat
+
+
+## Advanced use cases
+
+### Adding chit-chat
 
 To add professional chit-chat to your schema put this into your schema:
 ```json
@@ -128,14 +133,14 @@ This indicates that you want to make use of the standard schema for your
 properties and want add professional chit-chat.  This will add the resource to
 your generated assets and automatically include cross-training in the scripts.
 
-## Generating Schema from Swagger
+### Generating schema from swagger
 
 You can generate a JSON schema from a swagger file using the [`bf
 dialog:generate:swagger`](generator/packages/cli/readme.md#bf-dialoggenerateswagger-path) command. This will
 create a bot for collecting the parameters to a method as well as the assets to
 call that API once the parameters are collected.
 
-## Generating a Test from a Transcript
+### Generating a test from a 5ranscript
 A simple way to test your bot is to generate a test file from a transcript using [`bf
 dialog:generate:test`](generator/packages/cli/readme.md#bf-dialoggeneratetest-transcript-dialog) and [TestBot][TestBot].  
 
