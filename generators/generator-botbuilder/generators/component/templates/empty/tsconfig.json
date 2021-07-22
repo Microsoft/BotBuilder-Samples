@@ -1,0 +1,9 @@
+{
+  "extends": "@tsconfig/recommended",
+  "compilerOptions": {
+    "allowJs": true,
+    "composite": true,
+    "outDir": "lib",
+    "rootDir": "src"
+  }
+}

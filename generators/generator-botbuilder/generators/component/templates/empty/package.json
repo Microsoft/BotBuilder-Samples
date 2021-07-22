@@ -1,0 +1,32 @@
+{
+  "name": "<%= name %>",
+  "version": "1.0.0",
+  "description": "<%= description %>",
+  "author": "Generated using Microsoft Bot Builder Yeoman generator v<%= version %>",
+  "license": "MIT",
+  "files": [
+    "lib"
+  ],
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc -b",
+    "fmt": "prettier . -w",
+    "postinstall": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com"
+  },
+  "peerDependencies": {
+    "botbuilder-core": "^4.13.0",
+    "botbuilder-dialogs-adaptive-runtime-core": "^4.13.0-preview"
+  },
+  "devDependencies": {
+    "@tsconfig/recommended": "1.0.1",
+    "botbuilder-core": "~4.13.2",
+    "botbuilder-dialogs-adaptive-runtime-core": "~4.13.2-preview",
+    "prettier": "latest",
+    "typescript": "4.2.4"
+  }
+}
