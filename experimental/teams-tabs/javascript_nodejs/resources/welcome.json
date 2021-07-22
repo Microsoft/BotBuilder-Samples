@@ -1,0 +1,96 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "TextBlock",
+      "spacing": "medium",
+      "size": "default",
+      "weight": "bolder",
+      "text": "More actions ✨",
+      "wrap": true,
+      "maxLines": 0
+    },
+    {
+      "type": "TextBlock",
+      "size": "default",
+      "isSubtle": true,
+      "text": "Hello, nice to meet you!",
+      "wrap": true,
+      "maxLines": 0,
+      "id": "textToToggle",
+      "isVisible": false
+    },
+    {
+      "type": "ColumnSet",
+      "isVisible": false,
+      "id": "imagesToToggle",
+      "columns": [
+        {
+          "type": "Column",
+          "items": [
+            {
+              "style": "person",
+              "type": "Image",
+              "url": "https://picsum.photos/300?image=1025",
+              "isVisible": false,
+              "id": "imageToToggle",
+              "altText": "sample image 1",
+              "size": "medium"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "Image",
+              "url": "https://picsum.photos/300?image=433",
+              "isVisible": false,
+              "id": "imageToToggle2",
+              "altText": "sample image 2",
+              "size": "medium"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.ToggleVisibility",
+      "title": "Get started",
+      "targetElements": ["textToToggle", "imagesToToggle", "imageToToggle2"]
+    },
+    {
+      "type": "Action.ShowCard",
+      "title": "Learn more",
+      "card": {
+        "type": "AdaptiveCard",
+        "body": [
+          {
+            "type": "TextBlock",
+            "text": "Adaptive Card Tabs Spec"
+          }
+        ],
+        "actions": [
+          {
+            "type": "Action.OpenUrl",
+            "title": "Open in browser",
+            "url": "https://docs.microsoft.com/en-us/microsoftteams/platform/task-modules-and-cards/what-are-cards"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Action.Submit",
+      "title": "Advanced",
+      "data": {
+        "msteams": {
+          "type": "task/fetch"
+        }
+      }
+    }
+  ]
+}

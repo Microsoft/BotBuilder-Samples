@@ -1,0 +1,8 @@
+html, body, div.surface, div.panel {
+    height: 100%;
+    margin: 0;
+}
+
+div.panel {
+    padding: 15px;
+}

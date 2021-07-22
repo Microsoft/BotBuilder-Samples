@@ -1,0 +1,49 @@
+{
+  "type": "AdaptiveCard",
+  "body": [
+    {
+      "type": "TextBlock",
+      "size": "Medium",
+      "weight": "Bolder",
+      "text": "Quick actions ✨"
+    },
+    {
+      "type": "ActionSet",
+      "actions": [
+        {
+          "type": "Action.Submit",
+          "title": "Take time off"
+        },
+        {
+          "type": "Action.Submit",
+          "title": "Look up a coworker",
+          "data": {
+            "msteams": {
+              "type": "tab/submit",
+            },
+            "actionId":  "coworker"
+          }
+        },
+        {
+          "type": "Action.Submit",
+          "title": "Give feedback",
+          "data": {
+            "msteams": {
+              "type": "tab/submit"
+            }
+          }
+        },
+        {
+          "type": "Action.Submit",
+          "title": "Logout",
+          "data": {
+            "shouldLogout": true
+          }
+        }
+      ],
+      "separator": true
+    }
+  ],
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.2"
+}
