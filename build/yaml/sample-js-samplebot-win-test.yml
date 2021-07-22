@@ -1,0 +1,336 @@
+# This is used in the pipelines Sample-Js-CoreBot-Win-Test-yaml and Sample-Js-EchoBot-Win-Test-yaml.
+
+# 'Allow scripts to access the OAuth token' was selected in pipeline.  Add the following YAML to any steps requiring access:
+#       env:
+#           MY_ACCESS_TOKEN: $(System.AccessToken)
+# Variable 'AppId' is defined in Azure
+# Variable 'AppSecret' is defined in Azure
+# Variable 'AzureBotName' is defined in Azure
+# Variable 'AzureSubscription' is defined in Azure
+# Variable 'BotGroup' is defined in Azure
+# Variable 'DeleteResourceGroup' is defined in Azure
+# Variable 'MyGetPersonalAccessToken' is defined in Azure
+# Variable 'runCodesignValidationInjection' is defined in Azure
+# Variable 'SampleBotName' is defined in Azure
+# Variable 'SampleFolderName' is defined in Azure
+# Variable 'SampleRootPath' is defined in Azure
+# Variable Group 'SamplesE2ETestsVariableGroup' is defined in Azure
+# Variable Group 'MyGetPersonalAccessTokenVariableGroup' is defined in Azure
+
+parameters:
+  - name: testLatestPackage
+    displayName: Test latest package version
+    type: boolean
+    default: true
+  - name: versionToTest
+    displayName: Version to test (Only if 'Test latest' is unchecked)
+    type: string
+    default: 'Example: 4.15.0-dev.7afa288'
+  - name: packageFeed
+    displayName: Package feed to use
+    type: string
+    default: npm
+    values:
+    - npm
+    - MyGet
+
+# Run this job every night at 2 AM (PST) on the main branch
+schedules:
+- cron: 0 9 * * *
+  branches:
+    include:
+    - main
+  always: true
+
+# Do not run PR validation
+pr: none
+
+# Do not run CI validation
+trigger: none
+
+resources:
+  repositories:
+  - repository: self
+    type: git
+    ref: main
+
+#variables:
+#- group: SamplesE2ETestsVariableGroup
+#- group: MyGetPersonalAccessTokenVariableGroup
+
+jobs:
+- job: Job_1
+  displayName: Agent job 1
+  pool:
+    vmImage: windows-2019
+  steps:
+  - checkout: self
+    persistCredentials: True
+
+  - powershell: |
+      $packageName = "botbuilder";
+
+      Write-Host "Get $packageName preview version tagged 'next' from npmjs.com";
+      " "
+      "Available versions:";
+      npm view $packageName versions | Select -Last 30;
+
+      $dist = npm dist-tag ls $packageName;
+      $next = $dist.Where({$_.StartsWith("next:")});
+      [string]$latestVersion = $next.Split(':')[-1].Trim();
+
+      "Latest version:";
+      $packageName;
+      $latestVersion;
+      "##vso[task.setvariable variable=TargetVersion;]$latestVersion";
+
+      # This gets latest version from all versions.
+      #$versions = npm show botbuilder versions | ConvertFrom-Json
+      #$next = $versions[1][-1]
+    displayName: From npm feed get latest botbuilder package version  - https://www.npmjs.com/package/botbuilder
+    condition: ${{ and(eq(parameters.testLatestPackage, true), eq(parameters.packageFeed, 'npm')) }}
+
+  - powershell: |
+      $myGetPersonalAccessToken = "$(MyGetPersonalAccessToken)";
+      $myGetFeedName = "botbuilder-v4-js-daily";
+      $packageName = "botbuilder-ai";
+
+      $url = "https://botbuilder.myget.org/F/$myGetFeedName/auth/$myGetPersonalAccessToken/api/v2/feed-state";
+
+      Write-Host "Get latest $packageName version number from MyGet $myGetFeedName";
+      $result = Invoke-RestMethod -Uri $url -Method Get -ContentType "application/json";
+
+      $package = $result.packages | Where-Object {$_.id -eq $packageName};
+      " "
+      "Available versions:";
+      $package.versions | Select -Last 30;
+
+      ### Hard-coded ########## [string]$latestVersion = "4.15.0-dev.ffde26a";
+      [string]$latestVersion = $package.versions[-1];
+      " "
+      "Latest version:";
+      $package.id;
+      $latestVersion;
+      "##vso[task.setvariable variable=TargetVersion;]$latestVersion";    
+    displayName: 'From MyGet feed get latest botbuilder version number - https://botbuilder.myget.org/gallery/botbuilder-v4-dotnet-daily'
+    condition: ${{ and(eq(parameters.testLatestPackage, true), eq(parameters.packageFeed, 'MyGet')) }}
+
+  - powershell: |
+     $targetVersion = "${{ parameters.versionToTest }}";
+     $targetVersion;
+     "##vso[task.setvariable variable=TargetVersion;]$targetVersion";
+    displayName: 'From user input get specific botbuilder version number'
+    condition: ${{ ne(parameters.testLatestPackage, true) }}
+
+  - powershell: 'gci env:* | sort-object name | Format-Table -AutoSize -Wrap'
+    displayName: 'Display env vars'
+ 
+  - task: tagBuildOrRelease@0
+    displayName: Tag Build with botbuilder version
+    inputs:
+      tags: |
+        Using botbuilder version $(TargetVersion)
+        From ${{ parameters.packageFeed }} feed 
+
+  - powershell: |
+     # SetDependencyVersionInPackageJsonFile0.ps1
+      $path = "$(SampleRootPath)/package.json";
+      $packages = @('botbuilder','botbuilder-ai','botbuilder-dialogs','botbuilder-testing');
+      $newVersion = "$(TargetVersion)";
+
+      $content = Get-ChildItem -Path "$path" | Get-Content -Raw
+
+      foreach ($package in $packages) {
+          $find = "$package`": `"\S*`"";
+          $replace = "$package`": `"$newVersion`"";
+          $content = $content -Replace "$find", "$replace";
+      }
+
+      Set-Content -Path $path -Value $content;
+      '-------------'; get-content $path; '===================';
+    displayName: Set botbuilder version reference in package.json
+
+  - powershell: |
+        Set-Location -Path "$(SampleRootPath)"
+
+        New-Item -Path . -Name ".npmrc" -ItemType "file" -Value "registry=https://registry.npmjs.com/"
+    displayName: Create .npmrc for npm feed - https://www.npmjs.com/search?q=botbuilder
+    condition: ${{ eq(parameters.packageFeed, 'npm') }}
+
+  - powershell: |
+        Set-Location -Path "$(SampleRootPath)"
+
+        New-Item -Path . -Name ".npmrc" -ItemType "file" -Value "registry=https://botbuilder.myget.org/F/botbuilder-v4-js-daily/npm/"
+    displayName: Create .npmrc for MyGet feed - https://botbuilder.myget.org/feed/Packages/botbuilder-v4-js-daily
+    condition: ${{ eq(parameters.packageFeed, 'MyGet') }}
+
+  - task: Npm@1
+    displayName: npm install $(SampleFolderName)
+    inputs:
+      workingDir: $(SampleRootPath)
+      verbose: false
+
+  - powershell: |
+      #Set-PSDebug -Trace 1;
+
+      move-item -path $(SampleRootPath)/deploymentScripts/windows/* -destination $(SampleRootPath);
+
+      $DirToCompress = "$(SampleRootPath)";
+      $DirtoExclude =@("node_modules", "deploymentTemplates", "deploymentScripts");
+      $files = Get-ChildItem -Path $DirToCompress -Exclude $DirtoExclude;
+      $ZipFileDestination ="$(SampleRootPath)/testbot.zip";
+
+      Compress-Archive -Path $files -DestinationPath $ZipFileDestination;
+
+      #Set-PSDebug -Trace 0;
+    displayName: Set up deploy scripts, zip the bot
+
+  - task: CopyFiles@2
+    displayName: 'Copy testbot.zip to: $(Build.ArtifactStagingDirectory)'
+    inputs:
+      SourceFolder: $(SampleRootPath)
+      Contents: testbot.zip
+      TargetFolder: $(Build.ArtifactStagingDirectory)
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: testbot-zip'
+    inputs:
+      ArtifactName: testbot-zip
+
+  - task: AzureCLI@2
+    displayName: 'Preexisting RG: create Azure resources. Runs in even builds.'
+    inputs:
+      azureSubscription: 'FUSE Temporary'
+      scriptType: ps
+      scriptLocation: inlineScript
+      inlineScript: |
+        Write-Host "`n***** Creating Azure resources using the preexisting-rg template *****";
+        Write-Host "This task runs for even-numbered builds. Build ID = $(Build.BuildId)";
+        Write-Host "************************************************************************";
+        Set-PSDebug -Trace 1;
+     
+        az group create --location westus --name $(BotGroup);
+     
+        # set up bot channels registration, app service, app service plan
+        az deployment group create --resource-group "$(BotGroup)" --template-file "$(SampleRootPath)\DeploymentTemplates\template-with-preexisting-rg.json" --parameters appId="$(AppId)" appSecret="$(AppSecret)" botId="$(AzureBotName)" newWebAppName="$(AzureBotName)" newAppServicePlanName="$(AzureBotName)" appServicePlanLocation="westus" --name "$(AzureBotName)";
+     
+        Set-PSDebug -Trace 0;
+    condition: and(succeeded(), or( endsWith(variables['Build.BuildId'], 0), endsWith(variables['Build.BuildId'], 2), endsWith(variables['Build.BuildId'], 4), endsWith(variables['Build.BuildId'], 6), endsWith(variables['Build.BuildId'], 8)))
+
+  - task: AzureCLI@2
+    displayName: 'New RG: create Azure resources. Runs in odd builds.'
+    inputs:
+      azureSubscription: 'FUSE Temporary'
+      scriptType: ps
+      scriptLocation: inlineScript
+      inlineScript: |
+        Write-Host "`n***** Creating Azure resources using the new-rg template *****";
+        Write-Host "This task runs for odd-numbered builds. Build ID = $(Build.BuildId)";
+        Write-Host "****************************************************************";
+        Set-PSDebug -Trace 1;
+
+        # set up resource group, bot channels registration, app service, app service plan
+        az deployment sub create --name "$(BotGroup)" --template-file "$(SampleRootPath)\DeploymentTemplates\template-with-new-rg.json" --location "westus" --parameters appId=$(AppId) appSecret="$(AppSecret)" botId="$(AzureBotName)" botSku=F0 newAppServicePlanName="$(AzureBotName)" newWebAppName="$(AzureBotName)" groupName="$(BotGroup)" groupLocation="westus" newAppServicePlanLocation="westus";
+     
+        Set-PSDebug -Trace 0;
+    condition: and(succeeded(), or( endsWith(variables['Build.BuildId'], 1), endsWith(variables['Build.BuildId'], 3), endsWith(variables['Build.BuildId'], 5), endsWith(variables['Build.BuildId'], 7), endsWith(variables['Build.BuildId'], 9)))
+
+  - task: AzureCLI@2
+    displayName: 'Deploy bot, create directline channel '
+    inputs:
+      connectedServiceNameARM: 0ab0d343-57b9-4390-9a6a-13d71ef36de6
+      scriptType: ps
+      scriptLocation: inlineScript
+      inlineScript: >
+        # Generate web.config for bot deploy
+        az bot prepare-deploy --code-dir "$(SampleRootPath)" --lang Javascript
+
+        az webapp deployment source config-zip --resource-group "$(BotGroup)" --name "$(AzureBotName)" --src "$(Build.ArtifactStagingDirectory)\testbot.zip" --debug
+
+        az bot directline create --name "$(AzureBotName)" --resource-group "$(BotGroup)" > "$(System.DefaultWorkingDirectory)\DirectLineCreate.json" --debug
+
+  - powershell: |
+      # Key = Direct Line channel "Secret keys" in Azure portal
+      $json = Get-Content '$(System.DefaultWorkingDirectory)\DirectLineCreate.json' | Out-String | ConvertFrom-Json;
+      $key = $json.properties.properties.sites.key;
+      echo "##vso[task.setvariable variable=DIRECTLINE;]$key";
+      echo "##vso[task.setvariable variable=BOTID;]$(AzureBotName)";
+      Write-Host "setx DIRECTLINE $key";
+      Write-Host "setx BOTID $(AzureBotName)";
+    displayName: Set DIRECTLINE key, BOTID for running tests
+
+  - task: NuGetToolInstaller@1
+    displayName: Use NuGet 5.5.1
+    inputs:
+      versionSpec: 5.5.1
+
+  - powershell: |
+      $file = "$(System.DefaultWorkingDirectory)/samples/csharp_dotnetcore/tests/Samples.$(SampleBotName).FunctionalTests/nuget.config";
+
+      $content = @"
+      <?xml version="1.0" encoding="utf-8"?>
+      <configuration>
+        <packageSources>
+          <add key="nuget.org" value="https://api.nuget.org/v3/index.json" protocolVersion="3" />
+        </packageSources>
+        <activePackageSource>
+          <add key="All" value="(Aggregate source)" />
+        </activePackageSource>
+      </configuration>
+
+      "@;
+
+      New-Item -Path $file -ItemType "file" -Value $content;
+        '-------------'; get-content "$file"; '==================='
+    displayName: Create nuget.config for Samples.$(SampleBotName).FunctionalTests.csproj for NuGet.org feed
+
+  - task: NuGetCommand@2
+    displayName: NuGet restore dotnet Samples.$(SampleBotName).FunctionalTests.csproj
+    inputs:
+      solution: samples/csharp_dotnetcore/tests/Samples.$(SampleBotName).FunctionalTests/Samples.$(SampleBotName).FunctionalTests.csproj
+      selectOrConfig: config
+      nugetConfigPath: $(System.DefaultWorkingDirectory)/samples/csharp_dotnetcore/tests/Samples.$(SampleBotName).FunctionalTests/nuget.config
+
+  - task: DotNetCoreCLI@2
+    displayName: dotnet build dotnet Samples.$(SampleBotName).FunctionalTests.csproj
+    inputs:
+      projects: $(System.DefaultWorkingDirectory)/samples/csharp_dotnetcore/tests/Samples.$(SampleBotName).FunctionalTests/Samples.$(SampleBotName).FunctionalTests.csproj
+
+  - task: DotNetCoreCLI@2
+    displayName: dotnet test
+    inputs:
+      command: test
+      projects: $(System.DefaultWorkingDirectory)/samples/csharp_dotnetcore/tests/Samples.$(SampleBotName).FunctionalTests/**Tests.csproj
+      arguments: --verbosity Normal
+
+  - script: |
+      dir .. /s
+    displayName: 'Dir workspace'
+    continueOnError: true
+    condition: always()
+
+  - task: AzureCLI@2
+    displayName: Delete bot, app service, app service plan, group
+    inputs:
+      azureSubscription: 'FUSE Temporary'
+      scriptType: ps
+      scriptLocation: inlineScript
+      inlineScript: |
+        Set-PSDebug -Trace 1;
+
+        Write-Host "1) Delete Bot:";
+        az bot delete --name $(AzureBotName) --resource-group $(BotGroup);
+
+        Write-Host "2) Delete App Service:";
+        az webapp delete --name $(AzureBotName) --resource-group $(BotGroup);
+
+        Write-Host "3) Delete App Service plan:";
+        az appservice plan delete --name $(AzureBotName) --resource-group $(BotGroup) --yes;
+
+        Write-Host "4) Delete Resource Group:";
+        az group delete --name $(BotGroup) --yes;
+
+        Set-PSDebug -Trace 0;
+    condition: and(succeededOrFailed(), ne(variables['DeleteResourceGroup'], 'false'))
+    continueOnError: True
+
+...

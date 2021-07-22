@@ -112,13 +112,13 @@ namespace Samples.CoreBot.FunctionalTests
                 directLineSecret = Environment.GetEnvironmentVariable("DIRECTLINE");
                 if (string.IsNullOrWhiteSpace(directLineSecret))
                 {
-                    Assert.Inconclusive("Environment variable 'DIRECTLINE' not found.");
+                    Assert.Fail("Environment variable 'DIRECTLINE' not found.");
                 }
 
                 botId = Environment.GetEnvironmentVariable("BOTID");
                 if (string.IsNullOrWhiteSpace(botId))
                 {
-                    Assert.Inconclusive("Environment variable 'BOTID' not found.");
+                    Assert.Fail("Environment variable 'BOTID' not found.");
                 }
             }
         }
